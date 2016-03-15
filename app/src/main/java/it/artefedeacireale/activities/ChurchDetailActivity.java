@@ -1,0 +1,148 @@
+package it.artefedeacireale.activities;
+
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.text.Html;
+import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
+
+import it.artefedeacireale.R;
+import it.artefedeacireale.adapters.ArtworkListAdapter;
+import it.artefedeacireale.adapters.ChurchListAdapter;
+import it.artefedeacireale.api.models.Church;
+import it.artefedeacireale.services.ChurchDetailService;
+import it.artefedeacireale.util.NetworkUtil;
+
+public class ChurchDetailActivity extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener {
+
+    private static final String TAG = ChurchDetailActivity.class.getSimpleName();
+    private CollapsingToolbarLayout collapsingToolbarLayout;
+    private Toolbar mToolbar;
+    private TextView nameChurch, cityChurch;
+    private Intent intentService;
+    private RecyclerView mRecyclerView;
+    private LinearLayoutManager mLinearLayoutManager;
+    private ArtworkListAdapter artworkListAdapter;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_church_detail);
+
+        AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.app_bar_layout);
+        appBarLayout.addOnOffsetChangedListener(this);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+
+        collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+        collapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.ExpandedAppBar);
+        collapsingToolbarLayout.setCollapsedTitleTextAppearance(R.style.CollapsedAppBar);
+
+        nameChurch = (TextView) findViewById(R.id.name);
+        cityChurch = (TextView) findViewById(R.id.city);
+        nameChurch.setText(getIntent().getStringExtra("name_church"));
+        cityChurch.setText(getIntent().getStringExtra("city_church"));
+
+        mRecyclerView = (RecyclerView) findViewById(R.id.list);
+        mRecyclerView.setHasFixedSize(true);
+        mLinearLayoutManager = new LinearLayoutManager(getApplicationContext());
+        mRecyclerView.setLayoutManager(mLinearLayoutManager);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        artworkListAdapter = new ArtworkListAdapter(getApplicationContext());
+        mRecyclerView.setAdapter(artworkListAdapter);
+
+        Glide.with(getApplicationContext()).load(getIntent().getStringExtra("image")).crossFade().into((ImageView) findViewById(R.id.image));
+
+        startDownloadData();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        IntentFilter filter = new IntentFilter(ChurchDetailService.ACTION_CHURCH_DETAIL);
+        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, filter);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
+    }
+
+    private void startDownloadData() {
+
+        if (new NetworkUtil().isNetworkConnected(getApplicationContext())) {
+
+            if (intentService != null) stopService(intentService);
+            intentService = new Intent(this, ChurchDetailService.class);
+            intentService.putExtra("id_church", getIntent().getIntExtra("id_church", -1));
+            intentService.setAction(ChurchDetailService.ACTION_CHURCH_DETAIL);
+            startService(intentService);
+
+        }
+    }
+
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Church church = (Church)intent.getSerializableExtra("church");
+            setMyView(church);
+        }
+    };
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onOffsetChanged(AppBarLayout appBarLayout, int offset) {
+        if (Math.abs(offset) <= appBarLayout.getTotalScrollRange() - mToolbar.getHeight()) {
+            collapsingToolbarLayout.setTitle("");
+        }
+        else {
+            collapsingToolbarLayout.setTitle(getIntent().getStringExtra("name_church"));
+        }
+    }
+
+    private void setMyView(Church c) {
+        TextView apertura = (TextView)findViewById(R.id.apertura);
+        apertura.setText(Html.fromHtml(c.getOrario_apertura()));
+        TextView messa = (TextView)findViewById(R.id.messa);
+        messa.setText(Html.fromHtml(c.getOrario_s_messe()));
+        TextView descrizione = (TextView)findViewById(R.id.descrizione);
+        descrizione.setText(Html.fromHtml(c.getDescrizione()));
+
+        artworkListAdapter.setArtworks(c.getOpere_chiese());
+
+    }
+
+}
