@@ -4,12 +4,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Bitmap;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -22,11 +19,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.BitmapImageViewTarget;
 
 import it.artefedeacireale.R;
-import it.artefedeacireale.adapters.ArtworkListAdapter;
-import it.artefedeacireale.adapters.ChurchListAdapter;
+import it.artefedeacireale.adapters.CustomChurchDetailAndListAdapter;
 import it.artefedeacireale.api.models.Church;
 import it.artefedeacireale.services.ChurchDetailService;
 import it.artefedeacireale.util.NetworkUtil;
@@ -40,7 +35,7 @@ public class ChurchDetailActivity extends AppCompatActivity implements AppBarLay
     private Intent intentService;
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLinearLayoutManager;
-    private ArtworkListAdapter artworkListAdapter;
+    private CustomChurchDetailAndListAdapter customChurchDetailAndListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,8 +63,8 @@ public class ChurchDetailActivity extends AppCompatActivity implements AppBarLay
         mLinearLayoutManager = new LinearLayoutManager(getApplicationContext());
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        artworkListAdapter = new ArtworkListAdapter(getApplicationContext());
-        mRecyclerView.setAdapter(artworkListAdapter);
+        customChurchDetailAndListAdapter = new CustomChurchDetailAndListAdapter(getApplicationContext());
+        mRecyclerView.setAdapter(customChurchDetailAndListAdapter);
 
         Glide.with(getApplicationContext()).load(getIntent().getStringExtra("image")).crossFade().into((ImageView) findViewById(R.id.image));
 
@@ -134,14 +129,14 @@ public class ChurchDetailActivity extends AppCompatActivity implements AppBarLay
     }
 
     private void setMyView(Church c) {
-        TextView apertura = (TextView)findViewById(R.id.apertura);
+        /*TextView apertura = (TextView)findViewById(R.id.apertura);
         apertura.setText(Html.fromHtml(c.getOrario_apertura()));
         TextView messa = (TextView)findViewById(R.id.messa);
         messa.setText(Html.fromHtml(c.getOrario_s_messe()));
         TextView descrizione = (TextView)findViewById(R.id.descrizione);
-        descrizione.setText(Html.fromHtml(c.getDescrizione()));
+        descrizione.setText(Html.fromHtml(c.getDescrizione()));*/
 
-        artworkListAdapter.setArtworks(c.getOpere_chiese());
+        customChurchDetailAndListAdapter.setItemList(c);
 
     }
 
