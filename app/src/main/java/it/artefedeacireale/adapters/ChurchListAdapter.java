@@ -14,7 +14,6 @@ import java.util.ArrayList;
 
 import it.artefedeacireale.R;
 import it.artefedeacireale.api.models.Church;
-import it.artefedeacireale.api.models.Itinerary;
 
 /**
  * Created by davide on 14/03/16.

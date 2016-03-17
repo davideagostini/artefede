@@ -10,11 +10,8 @@ import com.android.volley.VolleyError;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import it.artefedeacireale.api.ChurchAPI;
 import it.artefedeacireale.api.ItineraryAPI;
-import it.artefedeacireale.api.models.Church;
 import it.artefedeacireale.api.models.Itinerary;
-import it.artefedeacireale.api.models.ItineraryDetail;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in

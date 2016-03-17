@@ -2,7 +2,6 @@ package it.artefedeacireale.services;
 
 import android.app.IntentService;
 import android.content.Intent;
-import android.content.Context;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
@@ -11,7 +10,6 @@ import com.android.volley.VolleyError;
 
 import it.artefedeacireale.api.ChurchAPI;
 import it.artefedeacireale.api.models.Artwork;
-import it.artefedeacireale.api.models.Church;
 
 
 public class ArtworkDetailService extends IntentService {

@@ -4,9 +4,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,7 +19,6 @@ import it.artefedeacireale.adapters.ChurchListAdapter;
 import it.artefedeacireale.api.models.Church;
 import it.artefedeacireale.api.models.ItineraryDetail;
 import it.artefedeacireale.services.ChurchService;
-import it.artefedeacireale.services.ItineraryService;
 import it.artefedeacireale.util.NetworkUtil;
 import it.artefedeacireale.util.RecyclerViewClickListener;
 

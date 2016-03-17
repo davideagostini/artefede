@@ -2,16 +2,13 @@ package it.artefedeacireale.services;
 
 import android.app.IntentService;
 import android.content.Intent;
-import android.content.Context;
 import android.support.v4.content.LocalBroadcastManager;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
 import it.artefedeacireale.api.ChurchAPI;
-import it.artefedeacireale.api.ItineraryAPI;
 import it.artefedeacireale.api.models.Church;
-import it.artefedeacireale.api.models.ItineraryDetail;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
