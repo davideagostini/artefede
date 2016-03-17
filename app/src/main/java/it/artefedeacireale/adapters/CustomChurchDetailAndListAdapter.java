@@ -167,6 +167,10 @@ public class CustomChurchDetailAndListAdapter extends RecyclerView.Adapter<Recyc
         notifyDataSetChanged();
     }
 
+    public Object get(int position) {
+        return itemList.get(position);
+    }
+
 }
 
 

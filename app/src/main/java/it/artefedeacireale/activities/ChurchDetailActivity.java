@@ -14,7 +14,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,9 +24,11 @@ import com.bumptech.glide.Glide;
 
 import it.artefedeacireale.R;
 import it.artefedeacireale.adapters.CustomChurchDetailAndListAdapter;
+import it.artefedeacireale.api.models.Artwork;
 import it.artefedeacireale.api.models.Church;
 import it.artefedeacireale.services.ChurchDetailService;
 import it.artefedeacireale.util.NetworkUtil;
+import it.artefedeacireale.util.RecyclerViewClickListener;
 
 public class ChurchDetailActivity extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener {
 
@@ -69,6 +73,26 @@ public class ChurchDetailActivity extends AppCompatActivity implements AppBarLay
         Glide.with(getApplicationContext()).load(getIntent().getStringExtra("image")).crossFade().into((ImageView) findViewById(R.id.image));
 
         startDownloadData();
+
+        mRecyclerView.addOnItemTouchListener(new RecyclerViewClickListener(getApplicationContext(), mRecyclerView, new RecyclerViewClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                if(customChurchDetailAndListAdapter.get(position) instanceof Artwork) {
+                    Artwork artwork = (Artwork) customChurchDetailAndListAdapter.get(position);
+                    Intent intent = new Intent(getApplicationContext(), ArtworkDetailActivity.class);
+                    intent.putExtra("id_artwork", artwork.getId());
+                    intent.putExtra("name_artwork", artwork.getNome());
+                    if(artwork.getImage_opera().size()>0)
+                        intent.putExtra("image_artwork", artwork.getImage_opera().get(0).getImage());
+                    startActivity(intent);
+                }
+            }
+
+            @Override
+            public void onItemLongPress(View view, int position) {
+
+            }
+        }));
     }
 
     @Override

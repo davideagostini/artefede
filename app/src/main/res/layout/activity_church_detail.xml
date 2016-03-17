@@ -29,13 +29,7 @@
                 android:layout_height="350dp"
                 android:fitsSystemWindows="true"
                 android:scaleType="centerCrop"
-                app:layout_collapseMode="parallax"
-                android:src="@drawable/image"/>
-
-            <!--<View
-                android:layout_width="match_parent"
-                android:layout_height="350dp"
-                android:background="@drawable/gradient_shape"/>-->
+                app:layout_collapseMode="parallax"/>
 
             <FrameLayout
                 android:id="@+id/frame_layout"
@@ -88,51 +82,11 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <!--<android.support.v4.widget.NestedScrollView
-        android:id="@+id/scroll"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipToPadding="false"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:paddingTop="@dimen/activity_vertical_margin"
-            android:paddingBottom="@dimen/activity_vertical_margin"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/apertura"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <TextView
-                android:id="@+id/messa"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <TextView
-                android:id="@+id/descrizione"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:lineSpacingExtra="10dp"/>
-
-        </LinearLayout>
-
-
-    </android.support.v4.widget.NestedScrollView>-->
-
     <android.support.v7.widget.RecyclerView
-        xmlns:android="http://schemas.android.com/apk/res/android"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:overScrollMode="never"
-        android:scrollbars="vertical"
         tools:listitem="@layout/item_list_artwork"/>
 
 

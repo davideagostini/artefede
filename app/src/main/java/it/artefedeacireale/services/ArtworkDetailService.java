@@ -4,31 +4,25 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.content.Context;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
 import it.artefedeacireale.api.ChurchAPI;
-import it.artefedeacireale.api.ItineraryAPI;
+import it.artefedeacireale.api.models.Artwork;
 import it.artefedeacireale.api.models.Church;
-import it.artefedeacireale.api.models.ItineraryDetail;
 
-/**
- * An {@link IntentService} subclass for handling asynchronous task requests in
- * a service on a separate handler thread.
- * <p>
- * TODO: Customize class - update intent actions, extra parameters and static
- * helper methods.
- */
-public class ChurchDetailService extends IntentService {
 
-    public static final String ACTION_CHURCH_DETAIL = "it.artefedeacireale.services.CHURCH_DETAIL";
-    private static final String TAG = ChurchDetailService.class.getSimpleName();
+public class ArtworkDetailService extends IntentService {
+
+    public static final String ACTION_ARTWORK_DETAIL = "it.artefedeacireale.services.ARTWORK_DETAIL";
+    private static final String TAG = ArtworkDetailService.class.getSimpleName();
     private LocalBroadcastManager mLocalBroadcastManager;
     final ChurchAPI churchAPI = new ChurchAPI();
 
-    public ChurchDetailService() {
-        super("ChurchDetailService");
+    public ArtworkDetailService() {
+        super("ArtworkDetailService");
     }
 
     @Override
@@ -39,13 +33,15 @@ public class ChurchDetailService extends IntentService {
 
     @Override
     protected void onHandleIntent(final Intent intent) {
-        churchAPI.getChurch(this, String.valueOf(intent.getIntExtra("id_church", -1)), new Response.Listener<Church>() {
+        churchAPI.getArtwork(this, String.valueOf(intent.getIntExtra("id_artwork", -1)), new Response.Listener<Artwork>() {
             @Override
-            public void onResponse(Church response) {
+            public void onResponse(Artwork response) {
+                Log.d(TAG, TAG + response.getNome() + " - " + response.getAnno());
                 Intent intentResponse = new Intent();
-                intentResponse.setAction(ACTION_CHURCH_DETAIL);
-                intentResponse.putExtra("church", response);
+                intentResponse.setAction(ACTION_ARTWORK_DETAIL);
+                intentResponse.putExtra("artwork", response);
                 mLocalBroadcastManager.sendBroadcast(intentResponse);
+
 
             }
         }, new Response.ErrorListener() {
@@ -54,6 +50,5 @@ public class ChurchDetailService extends IntentService {
                 System.out.println(error);
             }
         });
-
     }
 }

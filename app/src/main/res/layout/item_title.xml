@@ -25,6 +25,7 @@
             android:layout_height="wrap_content"
             android:text="titolo"
             android:textStyle="bold"
+            android:textSize="14dp"
             android:textColor="@color/blue_grey_500" />
 
     </LinearLayout>

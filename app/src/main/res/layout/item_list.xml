@@ -15,29 +15,50 @@
             android:scaleType="centerCrop"
             android:src="@drawable/itinerario"/>
 
-        <TextView
-            android:id="@+id/city"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:layout_margin="10dp"
-            android:padding="4dp"
-            android:gravity="top"
-            android:maxLines="1"
-            android:singleLine="true"
-            android:textColor="@color/white"
-            android:background="@color/colorPrimary"
-            android:text="Acireale"
-            android:textAllCaps="true"
-            android:textSize="10dp"
-            android:visibility="gone"/>
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/city"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:layout_margin="10dp"
+                android:padding="4dp"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:textColor="@color/white"
+                android:background="@color/colorPrimary"
+                android:text="Acireale"
+                android:textAllCaps="true"
+                android:textSize="10dp"
+                android:layout_alignParentLeft="true"
+                />
+
+            <TextView
+                android:id="@+id/time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:padding="4dp"
+                android:textColor="@color/white"
+                android:shadowColor="#000"
+                android:shadowRadius="7.0"
+                android:text="1h 15m"
+                android:textSize="11dp"
+                android:layout_alignParentRight="true"
+                />
+
+        </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/detail"
             android:layout_width="match_parent"
             android:layout_height="130dp"
             android:paddingLeft="10dp"
-            android:paddingBottom="10dp"
+            android:paddingBottom="15dp"
             android:gravity="bottom"
             android:orientation="vertical"
             android:background="@drawable/gradient_overlay">
@@ -57,21 +78,6 @@
                 android:text="Le tre basiliche di Acireale"
                 android:textAppearance="?android:attr/textAppearanceMedium"/>
 
-            <TextView
-                android:id="@+id/time"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:fontFamily="sans-serif-light"
-                android:gravity="bottom"
-                android:shadowColor="#000"
-                android:shadowRadius="7.0"
-                android:maxLines="1"
-                android:singleLine="true"
-                android:textColor="@color/white"
-                android:text="1h 15min"
-                android:layout_below="@+id/name"
-                 />
         </RelativeLayout>
 
     </FrameLayout>
