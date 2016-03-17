@@ -38,6 +38,8 @@
         <activity
             android:name=".activities.ArtworkDetailActivity"
             android:theme="@style/NoActionBar" />
+        <activity android:name=".activities.CreditsActivity"
+            android:theme="@style/NoActionBar"/>
 
         <service
             android:name=".services.ChurchService"
@@ -47,7 +49,9 @@
             android:exported="false" />
         <service
             android:name=".services.ArtworkDetailService"
-            android:exported="false"></service>
+            android:exported="false" />
+
+
     </application>
 
 </manifest>

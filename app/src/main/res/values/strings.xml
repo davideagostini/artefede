@@ -3,10 +3,23 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-
     <string name="action_settings">Settings</string>
-
     <string name="diocesi">Diocesi di Acireale</string>
-
+    <string name="itinerari">Itinerari</string>
+    <string name="mappa">Mappa</string>
+    <string name="foto_video">Foto e Video</string>
+    <string name="eventi">Eventi principali</string>
+    <string name="info">Informazioni utili</string>
+    <string name="credits">Credits</string>
+    <string name="credits_comitato"><b>Comitato promotore:</b> S.E.R. mons. Antonino Raspanti, vescovo di Acireale, don Carmelo Sciuto, direttore Ufficio Beni Culturali Ecclesiastici, Associazione Culturale Cento Campanili</string>
+    <string name="credits_coordinamento"><b>Coordinamento scientifico:</b> Antonio Agostini, don Carmelo Sciuto</string>
+    <string name="credits_testi"><b>Testi:</b> Anna Coco, Maria Coco, Antonella Di Gregorio</string>
+    <string name="credits_fotografie"><b>Fotografie:</b> Antonio Agostini, Grazia Musumeci, Antonio Torrisi</string>
+    <string name="credits_sviluppo"><b>Sviluppo applicazione mobile:</b> Davide Agostini</string>
+    <string name="credits_desc">Progetto per la custodia, la tutela e la valorizzazione di edifici di culto della Diocesi di Acireale, anno 2015.<br/>
+  			<b>Iniziativa realizzata con il contributo dell\'8x1000 alla Chiesa Cattolica.</b></string>
+    <string name="credits_year">2015 Diocesi di Acireale - Tutti i diritti sono riservati</string>
     <string name="long_d">Lorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur. Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\nLorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur. Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\nLorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur. Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. </string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
