@@ -16,10 +16,8 @@ import android.view.MenuItem;
 import java.util.ArrayList;
 
 import it.artefedeacireale.R;
-import it.artefedeacireale.adapters.ChurchListAdapter;
 import it.artefedeacireale.adapters.EventListAdapter;
 import it.artefedeacireale.api.models.Holiday;
-import it.artefedeacireale.services.ChurchDetailService;
 import it.artefedeacireale.services.EventService;
 import it.artefedeacireale.util.NetworkUtil;
 
