@@ -16,10 +16,18 @@
     <string name="credits_testi"><b>Testi:</b> Anna Coco, Maria Coco, Antonella Di Gregorio</string>
     <string name="credits_fotografie"><b>Fotografie:</b> Antonio Agostini, Grazia Musumeci, Antonio Torrisi</string>
     <string name="credits_sviluppo"><b>Sviluppo applicazione mobile:</b> Davide Agostini</string>
-    <string name="credits_desc">Progetto per la custodia, la tutela e la valorizzazione di edifici di culto della Diocesi di Acireale, anno 2015.<br/>
+    <string name="credits_desc">Progetto per la custodia, la tutela e la valorizzazione di edifici di culto della Diocesi di Acireale, anno 2015.<br />
   			<b>Iniziativa realizzata con il contributo dell\'8x1000 alla Chiesa Cattolica.</b></string>
     <string name="credits_year">2015 Diocesi di Acireale - Tutti i diritti sono riservati</string>
     <string name="long_d">Lorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur. Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\nLorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur. Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\nLorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur. Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. </string>
 
+    <string name="info_text">Per prenotare le visite guidate agli edifici ecclesiastici attraverso gli itinerari di Arte e Fede rivolgersi a:</string>
+    <string name="info_asso"><b>Associazione Culturale Cento Campanili</b><br />Largo Giovanni XXIII, 4<br />95024 Acireale Catania<br />Italia</string>
+    <string name="info_sede">+39 095 7639461</string>
+    <string name="info_tel">+39 380 7787260</string>
+    <string name="info_email">info@associazionecentocampanili.it</string>
+    <string name="info_curia">+39 095 601102</string>
+    <string name="info_curia_text">(lunedì, mercoledì, venerdì dalle ore 9.30 alle ore 12.30)</string>
+    <string name="info_ufficio">+39 095 7637579</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

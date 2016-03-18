@@ -7,20 +7,20 @@ import android.view.MenuItem;
 
 import it.artefedeacireale.R;
 
-public class CreditsActivity extends AppCompatActivity {
+public class InfoActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_credits);
+        setContentView(R.layout.activity_info);
 
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        mToolbar.setTitle("Credits");
+        mToolbar.setTitle("Informazioni utili");
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

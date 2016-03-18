@@ -23,6 +23,8 @@ import java.util.ArrayList;
 
 import it.artefedeacireale.activities.ChurchListActivity;
 import it.artefedeacireale.activities.CreditsActivity;
+import it.artefedeacireale.activities.HolidayActivity;
+import it.artefedeacireale.activities.InfoActivity;
 import it.artefedeacireale.adapters.ItineraryListAdapter;
 import it.artefedeacireale.api.models.Itinerary;
 import it.artefedeacireale.services.ItineraryService;
@@ -69,9 +71,10 @@ public class MainActivity extends AppCompatActivity {
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        if (drawerItem.equals(itemCredits)) {
-                            openCredits();
-                        }
+                        if(drawerItem.equals(itemEvent)) openHolyday();
+                        else if(drawerItem.equals(itemInfo)) openInfo();
+                        else if (drawerItem.equals(itemCredits)) openCredits();
+
 
                         return false;
                     }
@@ -85,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
                 itemInfo,
                 itemCredits
         )
-                .withSelectedItem(0)
+                .withSelectedItem(-1)
                 .build();
 
         mRecyclerView = (RecyclerView) findViewById(R.id.list);
@@ -141,6 +144,16 @@ public class MainActivity extends AppCompatActivity {
             startService(itineraryIntentService);
 
         }
+    }
+
+    public void openHolyday() {
+        Intent intent = new Intent(this, HolidayActivity.class);
+        startActivity(intent);
+    }
+
+    public void openInfo() {
+        Intent intent = new Intent(this, InfoActivity.class);
+        startActivity(intent);
     }
 
     public void openCredits() {

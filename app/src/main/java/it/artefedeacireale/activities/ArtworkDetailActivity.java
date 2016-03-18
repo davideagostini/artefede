@@ -134,10 +134,10 @@ public class ArtworkDetailActivity extends AppCompatActivity implements AppBarLa
             if(i < a.getArtisti().size()-1)
             name +=", ";
         }
-        if(a.getAnno().length()>0 && a.getTecnica().length()>0 && name.length()>0) {
-            artwork_author.setText(name);
-            artwork_period.setText(a.getAnno());
-            artwork_technique.setText(a.getTecnica());
+        if(a.getAnno().length()>0 || a.getTecnica().length()>0 || name.length()>0) {
+            if(name.length()>0) artwork_author.setText(name);
+            if(a.getAnno().length()>0) artwork_period.setText(a.getAnno());
+            if(a.getTecnica().length()>0) artwork_technique.setText(a.getTecnica());
             layout_info.setVisibility(View.VISIBLE);
         }
 
