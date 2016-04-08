@@ -1,10 +1,14 @@
 package it.artefedeacireale.activities;
 
+import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -61,6 +65,7 @@ public class ChurchListActivity extends AppCompatActivity {
                 intent.putExtra("id_church", church.getId());
                 intent.putExtra("name_church", church.getNome());
                 intent.putExtra("city_church", church.getCitta());
+                intent.putExtra("time_church", church.getTempo());
                 intent.putExtra("image", church.getImage_chiese().get(0).getImage());
                 startActivity(intent);
 
@@ -104,18 +109,19 @@ public class ChurchListActivity extends AppCompatActivity {
     private BroadcastReceiver itineraryReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            ItineraryDetail itinerary = (ItineraryDetail)intent.getSerializableExtra("itinerary_detail");
+            ItineraryDetail itinerary = (ItineraryDetail) intent.getSerializableExtra("itinerary_detail");
             mChurchListAdapter.setChurches(itinerary.getChiese());
         }
     };
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == android.R.id.home) {
-            onBackPressed();
-            return true;
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
         }
+
 
         return super.onOptionsItemSelected(item);
     }

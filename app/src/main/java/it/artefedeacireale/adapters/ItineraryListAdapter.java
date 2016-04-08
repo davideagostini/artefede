@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.ArrayList;
 
@@ -48,7 +49,7 @@ public class ItineraryListAdapter extends RecyclerView.Adapter<ItineraryListAdap
         // - replace the contents of the view with that element
         final Itinerary itinerary = itineraries.get(position);
 
-        Glide.with(context).load(itinerary.getImage()).crossFade().into(holder.image);
+        Glide.with(context).load(itinerary.getImage()).into(holder.image);
         holder.name.setText(itinerary.getNome());
         holder.time.setText(itinerary.getTempo());
 

@@ -34,7 +34,7 @@
             <FrameLayout
                 android:id="@+id/frame_layout"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="150dp"
                 android:layout_gravity="bottom|center_horizontal"
                 android:orientation="vertical"
                 app:layout_collapseMode="parallax"
@@ -65,6 +65,14 @@
                         android:layout_gravity="center_horizontal"
                         android:gravity="bottom|center"
                         android:textColor="@android:color/white" />
+
+                    <TextView
+                        android:id="@+id/time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="bottom|center"
+                        android:textColor="@color/white"/>
 
                 </LinearLayout>
             </FrameLayout>

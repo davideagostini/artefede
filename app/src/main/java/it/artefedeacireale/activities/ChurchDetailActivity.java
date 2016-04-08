@@ -1,18 +1,24 @@
 package it.artefedeacireale.activities;
 
+import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -31,13 +37,16 @@ import it.artefedeacireale.util.RecyclerViewClickListener;
 public class ChurchDetailActivity extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener {
 
     private static final String TAG = ChurchDetailActivity.class.getSimpleName();
+    private static final int CALL_PHONE = 0;
+    //private static final int REQUEST_CONTACTS = 1;
     private CollapsingToolbarLayout collapsingToolbarLayout;
     private Toolbar mToolbar;
-    private TextView nameChurch, cityChurch;
+    private TextView nameChurch, cityChurch, timeChurch;
     private Intent intentService;
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLinearLayoutManager;
     private CustomChurchDetailAndListAdapter customChurchDetailAndListAdapter;
+    private Church church;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,8 +66,10 @@ public class ChurchDetailActivity extends AppCompatActivity implements AppBarLay
 
         nameChurch = (TextView) findViewById(R.id.name);
         cityChurch = (TextView) findViewById(R.id.city);
+        timeChurch = (TextView) findViewById(R.id.time);
         nameChurch.setText(getIntent().getStringExtra("name_church"));
         cityChurch.setText(getIntent().getStringExtra("city_church"));
+        timeChurch.setText(getResources().getString(R.string.time) + " " + getIntent().getStringExtra("time_church"));
 
         mRecyclerView = (RecyclerView) findViewById(R.id.list);
         mRecyclerView.setHasFixedSize(true);
@@ -75,12 +86,12 @@ public class ChurchDetailActivity extends AppCompatActivity implements AppBarLay
         mRecyclerView.addOnItemTouchListener(new RecyclerViewClickListener(getApplicationContext(), mRecyclerView, new RecyclerViewClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                if(customChurchDetailAndListAdapter.get(position) instanceof Artwork) {
+                if (customChurchDetailAndListAdapter.get(position) instanceof Artwork) {
                     Artwork artwork = (Artwork) customChurchDetailAndListAdapter.get(position);
                     Intent intent = new Intent(getApplicationContext(), ArtworkDetailActivity.class);
                     intent.putExtra("id_artwork", artwork.getId());
                     intent.putExtra("name_artwork", artwork.getNome());
-                    if(artwork.getImage_opera().size()>0)
+                    if (artwork.getImage_opera().size() > 0)
                         intent.putExtra("image_artwork", artwork.getImage_opera().get(0).getImage());
                     startActivity(intent);
                 }
@@ -124,20 +135,47 @@ public class ChurchDetailActivity extends AppCompatActivity implements AppBarLay
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Church church = (Church)intent.getSerializableExtra("church");
+            church = (Church) intent.getSerializableExtra("church");
             setMyView(church);
         }
     };
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == android.R.id.home) {
-            onBackPressed();
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            case R.id.action_telephone:
+                /*Intent phoneIntent = new Intent(Intent.ACTION_CALL);
+                phoneIntent.setAction("tel:91-000-000-0000");
+                startActivity(phoneIntent);*/
+
+                return true;
+            case R.id.action_mail:
+                String uriText =
+                        "mailto:" + church.getEmail() +
+                                "?subject=" + Uri.encode("Informazioni") +
+                                "&body=" + Uri.encode("");
+                Uri uri = Uri.parse(uriText);
+                Intent sendIntent = new Intent(Intent.ACTION_SENDTO);
+                sendIntent.setData(uri);
+                startActivity(Intent.createChooser(sendIntent, "Invia email"));
             return true;
+            case R.id.action_video:
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(church.getVideo()));
+                startActivity(browserIntent);
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return super.onCreateOptionsMenu(menu);
+
     }
 
     @Override
@@ -151,14 +189,6 @@ public class ChurchDetailActivity extends AppCompatActivity implements AppBarLay
     }
 
     private void setMyView(Church c) {
-        /*TextView apertura = (TextView)findViewById(R.id.apertura);
-        apertura.setText(Html.fromHtml(c.getOrario_apertura()));
-        TextView messa = (TextView)findViewById(R.id.messa);
-        messa.setText(Html.fromHtml(c.getOrario_s_messe()));
-        TextView descrizione = (TextView)findViewById(R.id.descrizione);
-        descrizione.setText(Html.fromHtml(c.getDescrizione()));*/
-
         customChurchDetailAndListAdapter.setItemList(c);
-
     }
 }

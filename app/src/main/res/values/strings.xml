@@ -3,7 +3,11 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="action_settings">Settings</string>
+
+    <string name="action_telephone">Telefono</string>
+    <string name="action_email">Email</string>
+    <string name="action_video">Video</string>
+
     <string name="diocesi">Diocesi di Acireale</string>
     <string name="itinerari">Itinerari</string>
     <string name="mappa">Mappa</string>
@@ -29,5 +33,7 @@
     <string name="info_curia">+39 095 601102</string>
     <string name="info_curia_text">(lunedì, mercoledì, venerdì dalle ore 9.30 alle ore 12.30)</string>
     <string name="info_ufficio">+39 095 7637579</string>
+
+    <string name="time">Tempo medio di visita</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
