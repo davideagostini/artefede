@@ -210,7 +210,6 @@ public class ChurchDetailActivity extends AppCompatActivity implements AppBarLay
             phoneIntent.setData(Uri.parse("tel:"+church.getTelefono()));
             startActivity(phoneIntent);
         }
-
     }
 
     @Override

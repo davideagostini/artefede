@@ -33,7 +33,7 @@
             <FrameLayout
                 android:id="@+id/frame_layout"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="150dp"
                 android:layout_gravity="bottom|center_horizontal"
                 android:orientation="vertical"
                 app:layout_collapseMode="parallax"
@@ -44,6 +44,8 @@
                     android:id="@+id/linearlayout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
                     android:layout_gravity="center"
                     android:orientation="vertical">
 
@@ -54,16 +56,44 @@
                         android:layout_gravity="center_horizontal"
                         android:gravity="bottom|center"
                         android:textColor="@android:color/white"
-                        android:textSize="25sp"
+                        android:shadowColor="#000"
+                        android:shadowRadius="7.0"
+                        android:textSize="22sp"
                         android:textStyle="bold"/>
 
                     <TextView
-                        android:id="@+id/city"
+                        android:id="@+id/author"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:gravity="bottom|center"
-                        android:textColor="@android:color/white" />
+                        android:textColor="@android:color/white"
+                        android:shadowColor="#000"
+                        android:shadowRadius="7.0"
+                        android:textSize="18sp"/>
+
+                    <TextView
+                        android:id="@+id/period"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="bottom|center"
+                        android:textColor="@android:color/white"
+                        android:textStyle="italic"
+                        android:shadowColor="#000"
+                        android:shadowRadius="7.0"
+                        android:textSize="14sp"/>
+
+                    <TextView
+                        android:id="@+id/technique"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="bottom|center"
+                        android:textColor="@android:color/white"
+                        android:shadowColor="#000"
+                        android:shadowRadius="7.0"
+                        android:textStyle="bold"/>
 
                 </LinearLayout>
             </FrameLayout>
@@ -106,66 +136,6 @@
                 android:layout_gravity="center"
                 android:layout_margin="5dp"
                 />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/layout_info"
-                android:orientation="vertical"
-                android:visibility="gone">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingBottom="@dimen/custom_padding_bottom"
-                    android:paddingLeft="@dimen/activity_horizontal_margin"
-                    android:paddingRight="@dimen/activity_horizontal_margin"
-                    android:paddingTop="@dimen/activity_vertical_margin">
-
-                    <TextView
-                        android:id="@+id/title_info_artwork"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Informazioni tecniche"
-                        android:textStyle="bold"
-                        android:textColor="@color/blue_grey_500" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/custom_padding_bottom"
-                    android:paddingLeft="@dimen/activity_horizontal_margin"
-                    android:paddingRight="@dimen/activity_horizontal_margin"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/artwork_author"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:id="@+id/artwork_period"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-
-                    <TextView
-                        android:id="@+id/artwork_technique"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textStyle="bold"/>
-
-                </LinearLayout>
-
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#ccc" />
-
-            </LinearLayout>
 
 
             <LinearLayout

@@ -29,7 +29,7 @@ public class ArtworkDetailActivity extends AppCompatActivity implements AppBarLa
     private static final String TAG = ArtworkDetailActivity.class.getSimpleName();
     private CollapsingToolbarLayout collapsingToolbarLayout;
     private Toolbar mToolbar;
-    private TextView mTitle;
+    private TextView mTitle, mAuthor, mPeriod, mTechnique;
     private Intent intentService;
     private ProgressBar progressBar;
 
@@ -53,6 +53,9 @@ public class ArtworkDetailActivity extends AppCompatActivity implements AppBarLa
         collapsingToolbarLayout.setCollapsedTitleTextAppearance(R.style.CollapsedAppBar);
 
         mTitle = (TextView) findViewById(R.id.name);
+        mAuthor = (TextView) findViewById(R.id.author);
+        mPeriod = (TextView) findViewById(R.id.period);
+        mTechnique = (TextView) findViewById(R.id.technique);
         mTitle.setText(getIntent().getStringExtra("name_artwork"));
 
         if(getIntent().getStringExtra("image_artwork")!=null)
@@ -120,12 +123,7 @@ public class ArtworkDetailActivity extends AppCompatActivity implements AppBarLa
     };
 
     private void setMyView(Artwork a) {
-        LinearLayout layout_info = (LinearLayout) findViewById(R.id.layout_info);
         LinearLayout layout_description = (LinearLayout) findViewById(R.id.layout_description);
-
-        TextView artwork_author = (TextView) findViewById(R.id.artwork_author);
-        TextView artwork_period = (TextView) findViewById(R.id.artwork_period);
-        TextView artwork_technique = (TextView) findViewById(R.id.artwork_technique);
         TextView artwork_description = (TextView) findViewById(R.id.artwork_description);
 
         String name = "";
@@ -135,10 +133,9 @@ public class ArtworkDetailActivity extends AppCompatActivity implements AppBarLa
             name +=", ";
         }
         if(a.getAnno().length()>0 || a.getTecnica().length()>0 || name.length()>0) {
-            if(name.length()>0) artwork_author.setText(name);
-            if(a.getAnno().length()>0) artwork_period.setText(a.getAnno());
-            if(a.getTecnica().length()>0) artwork_technique.setText(a.getTecnica());
-            layout_info.setVisibility(View.VISIBLE);
+            if(name.length()>0) mAuthor.setText(name); //artwork_author.setText(name);
+            if(a.getAnno().length()>0) mPeriod.setText(a.getAnno()); //artwork_period.setText(a.getAnno());
+            if(a.getTecnica().length()>0) mTechnique.setText(a.getTecnica()); //artwork_technique.setText(a.getTecnica());
         }
 
         artwork_description.setText(a.getDescrizione());
