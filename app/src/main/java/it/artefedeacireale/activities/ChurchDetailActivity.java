@@ -7,11 +7,13 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,6 +25,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -37,8 +40,7 @@ import it.artefedeacireale.util.RecyclerViewClickListener;
 public class ChurchDetailActivity extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener {
 
     private static final String TAG = ChurchDetailActivity.class.getSimpleName();
-    private static final int CALL_PHONE = 0;
-    //private static final int REQUEST_CONTACTS = 1;
+    private static final int PERMISSIONS_REQUEST_PHONE_CALL = 100;
     private CollapsingToolbarLayout collapsingToolbarLayout;
     private Toolbar mToolbar;
     private TextView nameChurch, cityChurch, timeChurch;
@@ -147,10 +149,7 @@ public class ChurchDetailActivity extends AppCompatActivity implements AppBarLay
                 onBackPressed();
                 return true;
             case R.id.action_telephone:
-                /*Intent phoneIntent = new Intent(Intent.ACTION_CALL);
-                phoneIntent.setAction("tel:91-000-000-0000");
-                startActivity(phoneIntent);*/
-
+                callPhone();
                 return true;
             case R.id.action_mail:
                 String uriText =
@@ -201,5 +200,30 @@ public class ChurchDetailActivity extends AppCompatActivity implements AppBarLay
 
     private void setMyView(Church c) {
         customChurchDetailAndListAdapter.setItemList(c);
+    }
+
+    private void callPhone() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.CALL_PHONE}, PERMISSIONS_REQUEST_PHONE_CALL);
+        } else {
+            Intent phoneIntent = new Intent(Intent.ACTION_CALL);
+            phoneIntent.setData(Uri.parse("tel:"+church.getTelefono()));
+            startActivity(phoneIntent);
+        }
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == PERMISSIONS_REQUEST_PHONE_CALL) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                callPhone();
+            } else {
+                new AlertDialog.Builder(this)
+                        .setTitle("Effettua chiamata")
+                        .setMessage("Per effettuare la chiamata sono richiesti i permessi. Attivali in impostazioni del telefono.")
+                        .show();
+            }
+        }
     }
 }
