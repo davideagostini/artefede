@@ -166,6 +166,17 @@ public class ChurchDetailActivity extends AppCompatActivity implements AppBarLay
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(church.getVideo()));
                 startActivity(browserIntent);
                 return true;
+            case R.id.action_map:
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_VIEW);
+                String data = String.format("geo:%s,%s", church.getLatitudine(), church.getLongitudine());
+                String zoomLevel = "18";
+                if (zoomLevel != null) {
+                    data = String.format("%s?z=%s", data, zoomLevel);
+                }
+                intent.setData(Uri.parse(data));
+                startActivity(intent);
+                return true;
         }
 
         return super.onOptionsItemSelected(item);

@@ -4,9 +4,10 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="action_telephone">Telefono</string>
-    <string name="action_email">Email</string>
-    <string name="action_video">Video</string>
+    <string name="action_telephone">Chiama</string>
+    <string name="action_email">Invia email</string>
+    <string name="action_video">Mostra video</string>
+    <string name="action_map">Mostra sulla mappa</string>
 
     <string name="diocesi">Diocesi di Acireale</string>
     <string name="itinerari">Itinerari</string>
