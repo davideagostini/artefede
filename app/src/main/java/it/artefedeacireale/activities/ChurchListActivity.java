@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 
 import it.artefedeacireale.R;
 import it.artefedeacireale.adapters.ChurchListAdapter;
@@ -29,6 +30,7 @@ public class ChurchListActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLinearLayoutManager;
     private ChurchListAdapter mChurchListAdapter;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +44,7 @@ public class ChurchListActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
         mRecyclerView = (RecyclerView) findViewById(R.id.list);
         mRecyclerView.setHasFixedSize(true);
         mLinearLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -107,6 +110,7 @@ public class ChurchListActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             ItineraryDetail itinerary = (ItineraryDetail) intent.getSerializableExtra("itinerary_detail");
             mChurchListAdapter.setChurches(itinerary.getChiese());
+            hideProgressBar();
         }
     };
 
@@ -120,5 +124,10 @@ public class ChurchListActivity extends AppCompatActivity {
 
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void hideProgressBar() {
+        progressBar.setVisibility(View.GONE);
+        mRecyclerView.setVisibility(View.VISIBLE);
     }
 }
