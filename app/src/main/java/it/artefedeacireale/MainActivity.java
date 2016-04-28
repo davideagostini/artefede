@@ -108,13 +108,14 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.addOnItemTouchListener(new RecyclerViewClickListener(getApplicationContext(), mRecyclerView, new RecyclerViewClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-
-                Intent intent = new Intent(getApplicationContext(), ChurchListActivity.class);
-                Itinerary itinerary = mItineraryListAdapter.get(position);
-                intent.putExtra("id_itinerary", itinerary.getId());
-                intent.putExtra("name_itinerary", itinerary.getNome());
-                intent.putExtra("time_itinerary", itinerary.getTempo());
-                startActivity(intent);
+                if (new NetworkUtil().isNetworkConnected(getApplicationContext())) {
+                    Intent intent = new Intent(getApplicationContext(), ChurchListActivity.class);
+                    Itinerary itinerary = mItineraryListAdapter.get(position);
+                    intent.putExtra("id_itinerary", itinerary.getId());
+                    intent.putExtra("name_itinerary", itinerary.getNome());
+                    intent.putExtra("time_itinerary", itinerary.getTempo());
+                    startActivity(intent);
+                }
 
             }
 
@@ -153,13 +154,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openMap() {
-        Intent intent = new Intent(this, MapsActivity.class);
-        startActivity(intent);
+        if (new NetworkUtil().isNetworkConnected(getApplicationContext())) {
+            Intent intent = new Intent(this, MapsActivity.class);
+            startActivity(intent);
+        }
     }
 
     public void openHolyday() {
-        Intent intent = new Intent(this, HolidayActivity.class);
-        startActivity(intent);
+        if (new NetworkUtil().isNetworkConnected(getApplicationContext())) {
+            Intent intent = new Intent(this, HolidayActivity.class);
+            startActivity(intent);
+        }
     }
 
     public void openInfo() {

@@ -89,14 +89,16 @@ public class ChurchDetailActivity extends AppCompatActivity implements AppBarLay
         mRecyclerView.addOnItemTouchListener(new RecyclerViewClickListener(getApplicationContext(), mRecyclerView, new RecyclerViewClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                if (customChurchDetailAndListAdapter.get(position) instanceof Artwork) {
-                    Artwork artwork = (Artwork) customChurchDetailAndListAdapter.get(position);
-                    Intent intent = new Intent(getApplicationContext(), ArtworkDetailActivity.class);
-                    intent.putExtra("id_artwork", artwork.getId());
-                    intent.putExtra("name_artwork", artwork.getNome());
-                    if (artwork.getImage_opera().size() > 0)
-                        intent.putExtra("image_artwork", artwork.getImage_opera().get(0).getImage());
-                    startActivity(intent);
+                if (new NetworkUtil().isNetworkConnected(getApplicationContext())) {
+                    if (customChurchDetailAndListAdapter.get(position) instanceof Artwork) {
+                        Artwork artwork = (Artwork) customChurchDetailAndListAdapter.get(position);
+                        Intent intent = new Intent(getApplicationContext(), ArtworkDetailActivity.class);
+                        intent.putExtra("id_artwork", artwork.getId());
+                        intent.putExtra("name_artwork", artwork.getNome());
+                        if (artwork.getImage_opera().size() > 0)
+                            intent.putExtra("image_artwork", artwork.getImage_opera().get(0).getImage());
+                        startActivity(intent);
+                    }
                 }
             }
 
@@ -141,7 +143,7 @@ public class ChurchDetailActivity extends AppCompatActivity implements AppBarLay
             church = (Church) intent.getSerializableExtra("church");
             setMyView(church);
 
-            if(getIntent().getStringExtra("city_church") == null) {
+            if (getIntent().getStringExtra("city_church") == null) {
                 nameChurch.setText(church.getNome());
                 cityChurch.setText(church.getCitta());
                 timeChurch.setText(getResources().getString(R.string.time) + " " + church.getTempo());
@@ -168,7 +170,7 @@ public class ChurchDetailActivity extends AppCompatActivity implements AppBarLay
                 Intent sendIntent = new Intent(Intent.ACTION_SENDTO);
                 sendIntent.setData(uri);
                 startActivity(Intent.createChooser(sendIntent, "Invia email"));
-            return true;
+                return true;
             case R.id.action_video:
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(church.getVideo()));
                 startActivity(browserIntent);
@@ -200,8 +202,7 @@ public class ChurchDetailActivity extends AppCompatActivity implements AppBarLay
     public void onOffsetChanged(AppBarLayout appBarLayout, int offset) {
         if (Math.abs(offset) <= appBarLayout.getTotalScrollRange() - mToolbar.getHeight()) {
             collapsingToolbarLayout.setTitle("");
-        }
-        else {
+        } else {
             collapsingToolbarLayout.setTitle(getIntent().getStringExtra("name_church"));
         }
     }
@@ -216,7 +217,7 @@ public class ChurchDetailActivity extends AppCompatActivity implements AppBarLay
             requestPermissions(new String[]{Manifest.permission.CALL_PHONE}, PERMISSIONS_REQUEST_PHONE_CALL);
         } else {
             Intent phoneIntent = new Intent(Intent.ACTION_CALL);
-            phoneIntent.setData(Uri.parse("tel:"+church.getTelefono()));
+            phoneIntent.setData(Uri.parse("tel:" + church.getTelefono()));
             startActivity(phoneIntent);
         }
     }

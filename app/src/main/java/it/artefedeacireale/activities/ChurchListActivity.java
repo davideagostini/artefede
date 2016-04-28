@@ -58,15 +58,16 @@ public class ChurchListActivity extends AppCompatActivity {
         mRecyclerView.addOnItemTouchListener(new RecyclerViewClickListener(getApplicationContext(), mRecyclerView, new RecyclerViewClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-
-                Intent intent = new Intent(getApplicationContext(), ChurchDetailActivity.class);
-                Church church = mChurchListAdapter.get(position);
-                intent.putExtra("id_church", church.getId());
-                intent.putExtra("name_church", church.getNome());
-                intent.putExtra("city_church", church.getCitta());
-                intent.putExtra("time_church", church.getTempo());
-                intent.putExtra("image", church.getImage_chiese().get(0).getImage());
-                startActivity(intent);
+                if (new NetworkUtil().isNetworkConnected(getApplicationContext())) {
+                    Intent intent = new Intent(getApplicationContext(), ChurchDetailActivity.class);
+                    Church church = mChurchListAdapter.get(position);
+                    intent.putExtra("id_church", church.getId());
+                    intent.putExtra("name_church", church.getNome());
+                    intent.putExtra("city_church", church.getCitta());
+                    intent.putExtra("time_church", church.getTempo());
+                    intent.putExtra("image", church.getImage_chiese().get(0).getImage());
+                    startActivity(intent);
+                }
 
             }
 
