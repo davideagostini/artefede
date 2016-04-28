@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -111,13 +112,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap = googleMap;
         enabledMyLocation();
 
-        CameraPosition googlePlex = CameraPosition.builder()
-                .target(new LatLng(37.613137, 15.165795))
-                .zoom(16)
-                .bearing(0)
-                .tilt(45)
-                .build();
-        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(googlePlex), 3000, null);
+        CameraUpdate center = CameraUpdateFactory.newLatLng(new LatLng(37.613137, 15.165795));
+        CameraUpdate zoom = CameraUpdateFactory.zoomTo(15);
+        mMap.moveCamera(center);
+        mMap.animateCamera(zoom);
     }
 
     @Override
