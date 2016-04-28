@@ -25,6 +25,7 @@ import it.artefedeacireale.activities.ChurchListActivity;
 import it.artefedeacireale.activities.CreditsActivity;
 import it.artefedeacireale.activities.HolidayActivity;
 import it.artefedeacireale.activities.InfoActivity;
+import it.artefedeacireale.activities.MapsActivity;
 import it.artefedeacireale.adapters.ItineraryListAdapter;
 import it.artefedeacireale.api.models.Itinerary;
 import it.artefedeacireale.services.ItineraryService;
@@ -44,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Itinerari");
+        toolbar.setTitle(getResources().getString(R.string.itinerari));
         setSupportActionBar(toolbar);
 
         startDownloadItineraries();
@@ -72,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                         if(drawerItem.equals(itemEvent)) openHolyday();
+                        else if(drawerItem.equals(itemMap)) openMap();
                         else if(drawerItem.equals(itemInfo)) openInfo();
                         else if (drawerItem.equals(itemCredits)) openCredits();
 
@@ -144,6 +146,11 @@ public class MainActivity extends AppCompatActivity {
             startService(itineraryIntentService);
 
         }
+    }
+
+    public void openMap() {
+        Intent intent = new Intent(this, MapsActivity.class);
+        startActivity(intent);
     }
 
     public void openHolyday() {

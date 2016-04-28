@@ -35,7 +35,7 @@ public class APIDataRequest<T> extends Request<T> {
      *
      * @param url URL of the request to make
      * @param clazz Relevant class object, for Gson's reflection
-     * @param headers Map of request headers
+     * @param headers MarkerMaps of request headers
      */
     public APIDataRequest(Context context, String url, Class<T> clazz, Map<String, String> headers,
                           boolean authed,

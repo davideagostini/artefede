@@ -11,7 +11,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -19,13 +18,12 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -49,12 +47,15 @@ public class ChurchDetailActivity extends AppCompatActivity implements AppBarLay
     private LinearLayoutManager mLinearLayoutManager;
     private CustomChurchDetailAndListAdapter customChurchDetailAndListAdapter;
     private Church church;
+    private ProgressBar progressBar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_church_detail);
 
+        progressBar = (ProgressBar) findViewById(R.id.progress);
         AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.app_bar_layout);
         appBarLayout.addOnOffsetChangedListener(this);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -139,6 +140,13 @@ public class ChurchDetailActivity extends AppCompatActivity implements AppBarLay
         public void onReceive(Context context, Intent intent) {
             church = (Church) intent.getSerializableExtra("church");
             setMyView(church);
+
+            if(getIntent().getStringExtra("city_church") == null) {
+                nameChurch.setText(church.getNome());
+                cityChurch.setText(church.getCitta());
+                timeChurch.setText(getResources().getString(R.string.time) + " " + church.getTempo());
+                Glide.with(getApplicationContext()).load(church.getImage_chiese().get(0).getImage()).crossFade().into((ImageView) findViewById(R.id.image));
+            }
         }
     };
 
@@ -200,6 +208,7 @@ public class ChurchDetailActivity extends AppCompatActivity implements AppBarLay
 
     private void setMyView(Church c) {
         customChurchDetailAndListAdapter.setItemList(c);
+        progressBar.setVisibility(View.GONE);
     }
 
     private void callPhone() {

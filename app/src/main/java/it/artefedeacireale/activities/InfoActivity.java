@@ -3,7 +3,9 @@ package it.artefedeacireale.activities;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import it.artefedeacireale.R;
 
@@ -15,10 +17,13 @@ public class InfoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_info);
 
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        mToolbar.setTitle("Informazioni utili");
+        mToolbar.setTitle(getResources().getString(R.string.info));
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+
+        TextView info_asso = (TextView) findViewById(R.id.info_asso);
+        info_asso.setText(Html.fromHtml(getResources().getString(R.string.info_asso)));
     }
 
 

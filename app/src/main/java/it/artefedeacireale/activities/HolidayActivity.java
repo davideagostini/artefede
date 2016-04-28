@@ -48,6 +48,7 @@ public class HolidayActivity extends AppCompatActivity {
         eventListAdapter = new EventListAdapter(getApplicationContext());
         mRecyclerView.setAdapter(eventListAdapter);
 
+
         startDownloadData();
     }
 

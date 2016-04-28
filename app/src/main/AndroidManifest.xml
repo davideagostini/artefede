@@ -7,6 +7,11 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
 
     <application
         android:name=".Application"
@@ -26,31 +31,30 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activities.ChurchListActivity"
-            android:theme="@style/NoActionBar"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
         <activity
             android:name=".activities.ChurchDetailActivity"
-            android:theme="@style/NoActionBar"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
         <activity
             android:name=".activities.ArtworkDetailActivity"
-            android:theme="@style/NoActionBar"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
         <activity
             android:name=".activities.CreditsActivity"
-            android:theme="@style/NoActionBar"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
         <activity
             android:name=".activities.InfoActivity"
-            android:theme="@style/NoActionBar"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
         <activity
             android:name=".activities.HolidayActivity"
-            android:theme="@style/NoActionBar"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
 
         <service
             android:name=".services.ChurchService"
@@ -63,10 +67,23 @@
             android:exported="false" />
         <service
             android:name=".services.EventService"
-            android:exported="false"></service>
+            android:exported="false" />
         <service
             android:name=".services.ItineraryService"
             android:exported="false" />
+
+        <activity
+            android:name=".activities.MapsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBmd1YP7kLamy_JmKQWDxJO5kzFFWPD_RU" />
+
+        <service
+            android:name=".services.MapService"
+            android:exported="false"></service>
     </application>
 
 </manifest>

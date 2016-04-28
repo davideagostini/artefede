@@ -133,9 +133,9 @@ public class ArtworkDetailActivity extends AppCompatActivity implements AppBarLa
             name +=", ";
         }
         if(a.getAnno().length()>0 || a.getTecnica().length()>0 || name.length()>0) {
-            if(name.length()>0) mAuthor.setText(name); //artwork_author.setText(name);
-            if(a.getAnno().length()>0) mPeriod.setText(a.getAnno()); //artwork_period.setText(a.getAnno());
-            if(a.getTecnica().length()>0) mTechnique.setText(a.getTecnica()); //artwork_technique.setText(a.getTecnica());
+            if(name.length()>0) mAuthor.setText(name);
+            if(a.getAnno().length()>0) mPeriod.setText(a.getAnno());
+            if(a.getTecnica().length()>0) mTechnique.setText(a.getTecnica());
         }
 
         artwork_description.setText(a.getDescrizione());
