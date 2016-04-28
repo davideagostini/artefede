@@ -55,6 +55,10 @@
             android:name=".activities.HolidayActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
+        <activity
+            android:name=".activities.MapsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
 
         <service
             android:name=".services.ChurchService"
@@ -71,19 +75,14 @@
         <service
             android:name=".services.ItineraryService"
             android:exported="false" />
-
-        <activity
-            android:name=".activities.MapsActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/NoActionBar" />
+        <service
+            android:name=".services.MapService"
+            android:exported="false" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBmd1YP7kLamy_JmKQWDxJO5kzFFWPD_RU" />
 
-        <service
-            android:name=".services.MapService"
-            android:exported="false"></service>
     </application>
 
 </manifest>

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -14,10 +15,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import java.util.ArrayList;
@@ -39,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLinearLayoutManager;
     private ItineraryListAdapter mItineraryListAdapter;
-    private DrawerBuilder drawerBuilder;
+    private Drawer drawer;
     private ProgressBar progressBar;
 
     @Override
@@ -61,9 +64,20 @@ public class MainActivity extends AppCompatActivity {
         final PrimaryDrawerItem itemInfo = new PrimaryDrawerItem().withName(R.string.info).withIcon(R.mipmap.ic_email_black_24dp).withSelectable(false);
         final PrimaryDrawerItem itemCredits = new PrimaryDrawerItem().withName(R.string.credits).withIcon(R.mipmap.ic_info_outline_black_24dp).withSelectable(false);
 
-        drawerBuilder = new DrawerBuilder()
+        AccountHeader headerResult = new AccountHeaderBuilder()
+                .withActivity(this)
+                .withHeaderBackground(R.drawable.side_nav_bar)
+                .withSelectionListEnabledForSingleProfile(false)
+                .addProfiles(
+                        new ProfileDrawerItem().withName(getResources().getString(R.string.app_name))
+                                .withEmail(getResources().getString(R.string.diocesi))
+                                .withIcon(ContextCompat.getDrawable(getApplicationContext(), R.mipmap.ic_launcher))
+                )
+                .build();
+
+        drawer = new DrawerBuilder()
                 .withToolbar(toolbar)
-                .withActionBarDrawerToggle(true)
+                .withActionBarDrawerToggleAnimated(true)
                 .withActivity(this)
                 .withTranslucentStatusBar(true)
                 .withAccountHeader(new AccountHeaderBuilder()
@@ -71,6 +85,16 @@ public class MainActivity extends AppCompatActivity {
                                 .withHeaderBackground(R.drawable.side_nav_bar)
                                 .build()
                 )
+                .withAccountHeader(headerResult)
+                .addDrawerItems(
+                    itemItinerary,
+                    itemMap,
+                    itemFotoVideo,
+                    itemEvent,
+                    itemInfo,
+                    itemCredits
+                )
+                .withSelectedItem(-1)
                 .withSavedInstance(savedInstanceState)
                 .withActionBarDrawerToggle(true)
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
@@ -84,17 +108,7 @@ public class MainActivity extends AppCompatActivity {
 
                         return false;
                     }
-                });
-
-        drawerBuilder.addDrawerItems(
-                itemItinerary,
-                itemMap,
-                itemFotoVideo,
-                itemEvent,
-                itemInfo,
-                itemCredits
-        )
-                .withSelectedItem(-1)
+                })
                 .build();
 
         mRecyclerView = (RecyclerView) findViewById(R.id.list);
@@ -190,6 +204,15 @@ public class MainActivity extends AppCompatActivity {
     private void hideProgressBar() {
         progressBar.setVisibility(View.GONE);
         mRecyclerView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (drawer != null && drawer.isDrawerOpen()) {
+            drawer.closeDrawer();
+        } else {
+            super.onBackPressed();
+        }
     }
 
 
