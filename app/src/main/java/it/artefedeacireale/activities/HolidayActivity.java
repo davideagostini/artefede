@@ -38,7 +38,7 @@ public class HolidayActivity extends AppCompatActivity {
         setContentView(R.layout.activity_holiday);
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        mToolbar.setTitle("Eventi principali");
+        mToolbar.setTitle(getResources().getString(R.string.eventi));
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);

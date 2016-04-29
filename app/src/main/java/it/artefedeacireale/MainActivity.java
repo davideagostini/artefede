@@ -27,6 +27,7 @@ import java.util.ArrayList;
 
 import it.artefedeacireale.activities.ChurchListActivity;
 import it.artefedeacireale.activities.CreditsActivity;
+import it.artefedeacireale.activities.GalleryActivity;
 import it.artefedeacireale.activities.HolidayActivity;
 import it.artefedeacireale.activities.InfoActivity;
 import it.artefedeacireale.activities.MapsActivity;
@@ -102,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                         if(drawerItem.equals(itemEvent)) openHolyday();
                         else if(drawerItem.equals(itemMap)) openMap();
+                        else if(drawerItem.equals(itemFotoVideo)) openGallery();
                         else if(drawerItem.equals(itemInfo)) openInfo();
                         else if (drawerItem.equals(itemCredits)) openCredits();
 
@@ -170,6 +172,13 @@ public class MainActivity extends AppCompatActivity {
     public void openMap() {
         if (new NetworkUtil().isNetworkConnected(getApplicationContext())) {
             Intent intent = new Intent(this, MapsActivity.class);
+            startActivity(intent);
+        }
+    }
+
+    public void openGallery() {
+        if (new NetworkUtil().isNetworkConnected(getApplicationContext())) {
+            Intent intent = new Intent(this, GalleryActivity.class);
             startActivity(intent);
         }
     }
