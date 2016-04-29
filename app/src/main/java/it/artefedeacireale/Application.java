@@ -1,5 +1,8 @@
 package it.artefedeacireale;
 
+import android.content.Context;
+import android.support.multidex.MultiDex;
+
 import it.artefedeacireale.api.APIConstants;
 
 /**
@@ -10,5 +13,11 @@ public class Application extends android.app.Application{
     public void onCreate() {
         super.onCreate();
         APIConstants.debugApiType = APIConstants.DebugApi.full;
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
     }
 }
