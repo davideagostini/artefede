@@ -41,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
     private Drawer drawer;
     private ProgressBar progressBar;
 
-    private static final int PERMISSION_ACCESS_CALL_PHONE = 1;
     private static final int PERMISSION_ACCESS_WRITE_EXTERNAL_STORAGE = 2;
 
     @Override
@@ -55,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
         isPermissionsWriteGranted();
-        isPermissionsPhoneGranted();
 
         final PrimaryDrawerItem itemItinerary = new PrimaryDrawerItem().withName(R.string.itinerari).withIcon(R.mipmap.ic_map_black_24dp).withSelectable(false);
         final PrimaryDrawerItem itemMap = new PrimaryDrawerItem().withName(R.string.mappa).withIcon(R.mipmap.ic_place_black_24dp).withSelectable(false);
@@ -213,30 +211,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void isPermissionsPhoneGranted() {
-        if (Build.VERSION.SDK_INT >= 23) {
-            if (checkSelfPermission(android.Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
-
-
-            }
-            else if (shouldShowRequestPermissionRationale(Manifest.permission.CALL_PHONE)) {
-                new AlertDialog.Builder(this)
-                        .setTitle(R.string.no_phone_permission_title)
-                        .setMessage(R.string.no_phone_permission_message)
-                        .setPositiveButton(android.R.string.ok,
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.CALL_PHONE}, PERMISSION_ACCESS_CALL_PHONE);
-                                    }
-                                })
-                        .create()
-                        .show();
-
-            }
-        }
-    }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {
@@ -256,24 +230,6 @@ public class MainActivity extends AppCompatActivity {
                             .show();
                 }
             }
-
-            case PERMISSION_ACCESS_CALL_PHONE: {
-                if (grantResults.length > 0 && grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                    new AlertDialog.Builder(this)
-                            .setTitle(R.string.no_phone_permission_title)
-                            .setMessage(R.string.no_phone_permission_message)
-                            .setPositiveButton(android.R.string.ok,
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            dialog.dismiss();
-                                        }
-                                    })
-                            .create()
-                            .show();
-                }
-            }
-
         }
     }
 

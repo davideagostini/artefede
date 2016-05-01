@@ -3,18 +3,20 @@ package it.artefedeacireale.activities;
 import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
@@ -77,9 +79,12 @@ public class ChurchDetailActivity extends AppCompatActivity implements AppBarLay
         cityChurch = (TextView) findViewById(R.id.city);
         timeChurch = (TextView) findViewById(R.id.time);
 
-        if(getIntent().getStringExtra("name_church") != null) nameChurch.setText(getIntent().getStringExtra("name_church"));
-        if(getIntent().getStringExtra("city_church") != null) cityChurch.setText(getIntent().getStringExtra("city_church"));
-        if(getIntent().getStringExtra("time_church") != null) timeChurch.setText(getResources().getString(R.string.time) + " " + getIntent().getStringExtra("time_church"));
+        if (getIntent().getStringExtra("name_church") != null)
+            nameChurch.setText(getIntent().getStringExtra("name_church"));
+        if (getIntent().getStringExtra("city_church") != null)
+            cityChurch.setText(getIntent().getStringExtra("city_church"));
+        if (getIntent().getStringExtra("time_church") != null)
+            timeChurch.setText(getResources().getString(R.string.time) + " " + getIntent().getStringExtra("time_church"));
 
         mRecyclerView = (RecyclerView) findViewById(R.id.list);
         mRecyclerView.setHasFixedSize(true);
@@ -170,10 +175,12 @@ public class ChurchDetailActivity extends AppCompatActivity implements AppBarLay
                 public void onPageSelected(int position) {
                     setPage(tabLayout, position);
                 }
+
                 @Override
                 public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                     // Code goes here
                 }
+
                 @Override
                 public void onPageScrollStateChanged(int state) {
                     // Code goes here
@@ -181,6 +188,7 @@ public class ChurchDetailActivity extends AppCompatActivity implements AppBarLay
             });
 
             progressBar.setVisibility(View.GONE);
+            invalidateOptionsMenu();
         }
     };
 
@@ -224,10 +232,15 @@ public class ChurchDetailActivity extends AppCompatActivity implements AppBarLay
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        menu.clear();
+        if(church != null) {
+            if (church.getTelefono() != "") getMenuInflater().inflate(R.menu.menu_telephone, menu);
+            if (church.getEmail() != "") getMenuInflater().inflate(R.menu.menu_email, menu);
+            if (church.getVideo() != "") getMenuInflater().inflate(R.menu.menu_video, menu);
+        }
         getMenuInflater().inflate(R.menu.main, menu);
-        return super.onCreateOptionsMenu(menu);
-
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -244,12 +257,27 @@ public class ChurchDetailActivity extends AppCompatActivity implements AppBarLay
     }
 
     private void callPhone() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.CALL_PHONE}, PERMISSIONS_REQUEST_PHONE_CALL);
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE}, PERMISSIONS_REQUEST_PHONE_CALL);
+        } else if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CALL_PHONE)) {
+            new AlertDialog.Builder(this)
+                    .setTitle(R.string.no_phone_permission_title)
+                    .setMessage(R.string.no_phone_permission_message)
+                    .setPositiveButton(android.R.string.ok,
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    ActivityCompat.requestPermissions(ChurchDetailActivity.this, new String[]{Manifest.permission.CALL_PHONE}, PERMISSIONS_REQUEST_PHONE_CALL);
+                                }
+                            })
+                    .create()
+                    .show();
+
         } else {
             Intent phoneIntent = new Intent(Intent.ACTION_CALL);
             phoneIntent.setData(Uri.parse("tel:" + church.getTelefono()));
             startActivity(phoneIntent);
+
         }
     }
 
@@ -260,8 +288,16 @@ public class ChurchDetailActivity extends AppCompatActivity implements AppBarLay
                 callPhone();
             } else {
                 new AlertDialog.Builder(this)
-                        .setTitle("Effettua chiamata")
-                        .setMessage("Per effettuare la chiamata sono richiesti i permessi. Attivali in impostazioni del telefono.")
+                        .setTitle(R.string.no_phone_permission_title)
+                        .setMessage(R.string.no_phone_permission_message)
+                        .setPositiveButton(android.R.string.ok,
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        ActivityCompat.requestPermissions(ChurchDetailActivity.this, new String[]{Manifest.permission.CALL_PHONE}, PERMISSIONS_REQUEST_PHONE_CALL);
+                                    }
+                                })
+                        .create()
                         .show();
             }
         }
