@@ -32,6 +32,7 @@ public class ArtworkDetailActivity extends AppCompatActivity implements AppBarLa
     private TextView mTitle, mAuthor, mPeriod, mTechnique;
     private Intent intentService;
     private ProgressBar progressBar;
+    private ImageView image;
 
 
     @Override
@@ -56,12 +57,23 @@ public class ArtworkDetailActivity extends AppCompatActivity implements AppBarLa
         mAuthor = (TextView) findViewById(R.id.author);
         mPeriod = (TextView) findViewById(R.id.period);
         mTechnique = (TextView) findViewById(R.id.technique);
+        image = (ImageView) findViewById(R.id.image);
         mTitle.setText(getIntent().getStringExtra("name_artwork"));
 
-        if(getIntent().getStringExtra("image_artwork")!=null)
-            Glide.with(getApplicationContext()).load(getIntent().getStringExtra("image_artwork")).crossFade().into((ImageView) findViewById(R.id.image));
+        if (getIntent().getStringExtra("image_artwork") != null)
+            Glide.with(getApplicationContext()).load(getIntent().getStringExtra("image_artwork")).crossFade().into(image);
 
         startDownloadData();
+
+        image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), DetailImageActivity.class);
+                intent.putExtra("urlImage", getIntent().getStringExtra("image_artwork"));
+                startActivity(intent);
+            }
+
+        });
     }
 
     private void startDownloadData() {
@@ -127,15 +139,15 @@ public class ArtworkDetailActivity extends AppCompatActivity implements AppBarLa
         TextView artwork_description = (TextView) findViewById(R.id.artwork_description);
 
         String name = "";
-        for (int i = 0; i<a.getArtisti().size(); i++) {
+        for (int i = 0; i < a.getArtisti().size(); i++) {
             name += a.getArtisti().get(i).getNome_cognome();
-            if(i < a.getArtisti().size()-1)
-            name +=", ";
+            if (i < a.getArtisti().size() - 1)
+                name += ", ";
         }
-        if(a.getAnno().length()>0 || a.getTecnica().length()>0 || name.length()>0) {
-            if(name.length()>0) mAuthor.setText(name);
-            if(a.getAnno().length()>0) mPeriod.setText(a.getAnno());
-            if(a.getTecnica().length()>0) mTechnique.setText(a.getTecnica());
+        if (a.getAnno().length() > 0 || a.getTecnica().length() > 0 || name.length() > 0) {
+            if (name.length() > 0) mAuthor.setText(name);
+            if (a.getAnno().length() > 0) mPeriod.setText(a.getAnno());
+            if (a.getTecnica().length() > 0) mTechnique.setText(a.getTecnica());
         }
 
         artwork_description.setText(a.getDescrizione());

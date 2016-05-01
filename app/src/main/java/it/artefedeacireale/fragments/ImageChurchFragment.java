@@ -1,7 +1,6 @@
 package it.artefedeacireale.fragments;
 
-import android.content.Context;
-import android.net.Uri;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -12,12 +11,14 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 
 import it.artefedeacireale.R;
+import it.artefedeacireale.activities.DetailImageActivity;
 
 
 public class ImageChurchFragment extends Fragment {
     // Store instance variables
     private String urlImage;
     private int idImage;
+    private ImageView imageView;
 
     // newInstance constructor for creating fragment with arguments
     public static ImageChurchFragment newInstance(String urlImage) {
@@ -50,8 +51,20 @@ public class ImageChurchFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_image_church, container, false);
 
+        imageView = (ImageView) view.findViewById(R.id.image);
 
-        Glide.with(getActivity()).load(urlImage != null ? urlImage : idImage).crossFade().into((ImageView) view.findViewById(R.id.image));
+        Glide.with(getActivity()).load(urlImage != null ? urlImage : idImage).crossFade().into(imageView);
+
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(urlImage != null) {
+                    Intent intent = new Intent(getActivity(), DetailImageActivity.class);
+                    intent.putExtra("urlImage", urlImage);
+                    startActivity(intent);
+                }
+            }
+        });
 
         return view;
     }

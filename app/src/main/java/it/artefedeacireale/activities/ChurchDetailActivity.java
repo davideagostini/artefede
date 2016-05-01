@@ -26,11 +26,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
-import com.bumptech.glide.Glide;
 
 import it.artefedeacireale.R;
 import it.artefedeacireale.adapters.CustomChurchDetailAndListAdapter;
@@ -79,9 +76,10 @@ public class ChurchDetailActivity extends AppCompatActivity implements AppBarLay
         nameChurch = (TextView) findViewById(R.id.name);
         cityChurch = (TextView) findViewById(R.id.city);
         timeChurch = (TextView) findViewById(R.id.time);
-        nameChurch.setText(getIntent().getStringExtra("name_church"));
-        cityChurch.setText(getIntent().getStringExtra("city_church"));
-        timeChurch.setText(getResources().getString(R.string.time) + " " + getIntent().getStringExtra("time_church"));
+
+        if(getIntent().getStringExtra("name_church") != null) nameChurch.setText(getIntent().getStringExtra("name_church"));
+        if(getIntent().getStringExtra("city_church") != null) cityChurch.setText(getIntent().getStringExtra("city_church"));
+        if(getIntent().getStringExtra("time_church") != null) timeChurch.setText(getResources().getString(R.string.time) + " " + getIntent().getStringExtra("time_church"));
 
         mRecyclerView = (RecyclerView) findViewById(R.id.list);
         mRecyclerView.setHasFixedSize(true);
@@ -92,10 +90,7 @@ public class ChurchDetailActivity extends AppCompatActivity implements AppBarLay
         mRecyclerView.setAdapter(customChurchDetailAndListAdapter);
 
         vpPager = (ViewPager) findViewById(R.id.vpPager);
-
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-
-        //Glide.with(getApplicationContext()).load(getIntent().getStringExtra("image")).crossFade().into((ImageView) findViewById(R.id.image));
 
         startDownloadData();
 
@@ -161,14 +156,11 @@ public class ChurchDetailActivity extends AppCompatActivity implements AppBarLay
                 nameChurch.setText(church.getNome());
                 cityChurch.setText(church.getCitta());
                 timeChurch.setText(getResources().getString(R.string.time) + " " + church.getTempo());
-                //Glide.with(getApplicationContext()).load(church.getImage_chiese().get(0).getImage()).crossFade().into((ImageView) findViewById(R.id.image));
             }
 
             adapterViewPager = new MyPagerAdapter(getSupportFragmentManager(), church);
             vpPager.setAdapter(adapterViewPager);
-
             tabLayout.setupWithViewPager(vpPager);
-
             setPage(tabLayout, vpPager.getCurrentItem());
 
             vpPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {

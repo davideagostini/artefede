@@ -26,7 +26,6 @@ import java.util.ArrayList;
 import it.artefedeacireale.R;
 import it.artefedeacireale.adapters.GalleryFotoListAdapter;
 import it.artefedeacireale.adapters.GalleryVideoListAdapter;
-import it.artefedeacireale.api.models.Church;
 import it.artefedeacireale.api.models.GalleryFoto;
 import it.artefedeacireale.api.models.GalleryVideo;
 import it.artefedeacireale.fragments.ImageChurchFragment;
