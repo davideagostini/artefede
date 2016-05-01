@@ -1,21 +1,16 @@
-package it.artefedeacireale;
+package it.artefedeacireale.activities;
 
 import android.Manifest;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -32,21 +27,14 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import java.util.ArrayList;
 
-import it.artefedeacireale.activities.ChurchListActivity;
-import it.artefedeacireale.activities.CreditsActivity;
-import it.artefedeacireale.activities.GalleryActivity;
-import it.artefedeacireale.activities.HolidayActivity;
-import it.artefedeacireale.activities.InfoActivity;
-import it.artefedeacireale.activities.MapsActivity;
+import it.artefedeacireale.R;
 import it.artefedeacireale.adapters.ItineraryListAdapter;
 import it.artefedeacireale.api.models.Itinerary;
-import it.artefedeacireale.services.ItineraryService;
 import it.artefedeacireale.util.NetworkUtil;
 import it.artefedeacireale.util.RecyclerViewClickListener;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Intent itineraryIntentService;
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLinearLayoutManager;
     private ItineraryListAdapter mItineraryListAdapter;
@@ -65,8 +53,6 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
-
-        startDownloadItineraries();
 
         isPermissionsWriteGranted();
         isPermissionsPhoneGranted();
@@ -134,6 +120,9 @@ public class MainActivity extends AppCompatActivity {
         mItineraryListAdapter = new ItineraryListAdapter(getApplicationContext());
         mRecyclerView.setAdapter(mItineraryListAdapter);
 
+        mItineraryListAdapter.setItineraries((ArrayList<Itinerary>) getIntent().getSerializableExtra("itineraries"));
+        hideProgressBar();
+
         mRecyclerView.addOnItemTouchListener(new RecyclerViewClickListener(getApplicationContext(), mRecyclerView, new RecyclerViewClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
@@ -153,33 +142,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }));
 
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        IntentFilter filter = new IntentFilter(ItineraryService.ACTION_ITINERARY);
-        LocalBroadcastManager.getInstance(this).registerReceiver(itineraryReceiver, filter);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(itineraryReceiver);
-    }
-
-    private void startDownloadItineraries() {
-
-        if (new NetworkUtil().isNetworkConnected(getApplicationContext())) {
-
-            if (itineraryIntentService != null) stopService(itineraryIntentService);
-            itineraryIntentService = new Intent(this, ItineraryService.class);
-            itineraryIntentService.setAction(ItineraryService.ACTION_ITINERARY);
-            startService(itineraryIntentService);
-
-        }
     }
 
     public void openMap() {
@@ -212,16 +174,6 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, CreditsActivity.class);
         startActivity(intent);
     }
-
-    private BroadcastReceiver itineraryReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            ArrayList<Itinerary> itineraries = (ArrayList<Itinerary>) intent.getSerializableExtra("itineraries");
-            mItineraryListAdapter.setItineraries(itineraries);
-            hideProgressBar();
-
-        }
-    };
 
     private void hideProgressBar() {
         progressBar.setVisibility(View.GONE);

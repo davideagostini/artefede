@@ -11,7 +11,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -31,6 +36,7 @@ import it.artefedeacireale.R;
 import it.artefedeacireale.adapters.CustomChurchDetailAndListAdapter;
 import it.artefedeacireale.api.models.Artwork;
 import it.artefedeacireale.api.models.Church;
+import it.artefedeacireale.fragments.ImageChurchFragment;
 import it.artefedeacireale.services.ChurchDetailService;
 import it.artefedeacireale.util.NetworkUtil;
 import it.artefedeacireale.util.RecyclerViewClickListener;
@@ -48,6 +54,9 @@ public class ChurchDetailActivity extends AppCompatActivity implements AppBarLay
     private CustomChurchDetailAndListAdapter customChurchDetailAndListAdapter;
     private Church church;
     private ProgressBar progressBar;
+    private MyPagerAdapter adapterViewPager;
+    private ViewPager vpPager;
+    private TabLayout tabLayout;
 
 
     @Override
@@ -82,7 +91,11 @@ public class ChurchDetailActivity extends AppCompatActivity implements AppBarLay
         customChurchDetailAndListAdapter = new CustomChurchDetailAndListAdapter(getApplicationContext());
         mRecyclerView.setAdapter(customChurchDetailAndListAdapter);
 
-        Glide.with(getApplicationContext()).load(getIntent().getStringExtra("image")).crossFade().into((ImageView) findViewById(R.id.image));
+        vpPager = (ViewPager) findViewById(R.id.vpPager);
+
+        tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+
+        //Glide.with(getApplicationContext()).load(getIntent().getStringExtra("image")).crossFade().into((ImageView) findViewById(R.id.image));
 
         startDownloadData();
 
@@ -143,12 +156,39 @@ public class ChurchDetailActivity extends AppCompatActivity implements AppBarLay
             church = (Church) intent.getSerializableExtra("church");
             setMyView(church);
 
+            //se arrivo in questa activity dalla mappa ho questi valori nulli e quindi li prendo dall'oggetto Church
             if (getIntent().getStringExtra("city_church") == null) {
                 nameChurch.setText(church.getNome());
                 cityChurch.setText(church.getCitta());
                 timeChurch.setText(getResources().getString(R.string.time) + " " + church.getTempo());
-                Glide.with(getApplicationContext()).load(church.getImage_chiese().get(0).getImage()).crossFade().into((ImageView) findViewById(R.id.image));
+                //Glide.with(getApplicationContext()).load(church.getImage_chiese().get(0).getImage()).crossFade().into((ImageView) findViewById(R.id.image));
             }
+
+            adapterViewPager = new MyPagerAdapter(getSupportFragmentManager(), church);
+            vpPager.setAdapter(adapterViewPager);
+
+            tabLayout.setupWithViewPager(vpPager);
+
+            setPage(tabLayout, vpPager.getCurrentItem());
+
+            vpPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
+                // This method will be invoked when a new page becomes selected.
+                @Override
+                public void onPageSelected(int position) {
+                    setPage(tabLayout, position);
+                }
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                    // Code goes here
+                }
+                @Override
+                public void onPageScrollStateChanged(int state) {
+                    // Code goes here
+                }
+            });
+
+            progressBar.setVisibility(View.GONE);
         }
     };
 
@@ -209,7 +249,6 @@ public class ChurchDetailActivity extends AppCompatActivity implements AppBarLay
 
     private void setMyView(Church c) {
         customChurchDetailAndListAdapter.setItemList(c);
-        progressBar.setVisibility(View.GONE);
     }
 
     private void callPhone() {
@@ -234,5 +273,65 @@ public class ChurchDetailActivity extends AppCompatActivity implements AppBarLay
                         .show();
             }
         }
+    }
+
+    public void setPage(TabLayout tabLayout, int page) {
+        switch (page) {
+            case 0:
+                tabLayout.getTabAt(0).setIcon(R.drawable.indicator_dot_white);
+                tabLayout.getTabAt(1).setIcon(R.drawable.indicator_dot_grey);
+                tabLayout.getTabAt(2).setIcon(R.drawable.indicator_dot_grey);
+                break;
+            case 1:
+                tabLayout.getTabAt(0).setIcon(R.drawable.indicator_dot_grey);
+                tabLayout.getTabAt(1).setIcon(R.drawable.indicator_dot_white);
+                tabLayout.getTabAt(2).setIcon(R.drawable.indicator_dot_grey);
+                break;
+            case 2:
+                tabLayout.getTabAt(0).setIcon(R.drawable.indicator_dot_grey);
+                tabLayout.getTabAt(1).setIcon(R.drawable.indicator_dot_grey);
+                tabLayout.getTabAt(2).setIcon(R.drawable.indicator_dot_white);
+                break;
+            default:
+                break;
+        }
+    }
+
+    public static class MyPagerAdapter extends FragmentPagerAdapter {
+        private static int NUM_ITEMS = 3;
+        private Church church;
+
+        public MyPagerAdapter(FragmentManager fragmentManager, Church church) {
+            super(fragmentManager);
+            this.church = church;
+        }
+
+        // Returns total number of pages
+        @Override
+        public int getCount() {
+            return NUM_ITEMS;
+        }
+
+        // Returns the fragment to display for that page
+        @Override
+        public Fragment getItem(int position) {
+            switch (position) {
+                case 0:
+                    return ImageChurchFragment.newInstance(church.getImage_chiese().get(0).getImage());
+                case 1:
+                    return ImageChurchFragment.newInstance(church.getImage_chiese().get(1).getImage());
+                case 2:
+                    return ImageChurchFragment.newInstance(church.getImage_chiese().get(2).getImage());
+                default:
+                    return new Fragment();
+            }
+        }
+
+        // Returns the page title for the top indicator
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return "";
+        }
+
     }
 }

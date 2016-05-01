@@ -65,7 +65,6 @@ public class ChurchListActivity extends AppCompatActivity {
                     intent.putExtra("name_church", church.getNome());
                     intent.putExtra("city_church", church.getCitta());
                     intent.putExtra("time_church", church.getTempo());
-                    intent.putExtra("image", church.getImage_chiese().get(0).getImage());
                     startActivity(intent);
                 }
 

@@ -23,12 +23,11 @@
             app:expandedTitleMarginStart="48dp"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-            <ImageView
-                android:id="@+id/image"
+            <android.support.v4.view.ViewPager
+                android:id="@+id/vpPager"
                 android:layout_width="match_parent"
                 android:layout_height="350dp"
                 android:fitsSystemWindows="true"
-                android:scaleType="centerCrop"
                 app:layout_collapseMode="parallax"/>
 
             <FrameLayout
@@ -36,19 +35,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:layout_gravity="bottom|center_horizontal"
+                android:background="@drawable/gradient_overlay"
                 android:orientation="vertical"
                 app:layout_collapseMode="parallax"
-                app:layout_collapseParallaxMultiplier="0.3"
-                android:background="@drawable/gradient_overlay">
+                app:layout_collapseParallaxMultiplier="0.3">
 
                 <LinearLayout
                     android:id="@+id/linearlayout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:orientation="vertical"
                     android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:orientation="vertical">
+                    android:paddingRight="10dp">
 
                     <TextView
                         android:id="@+id/name"
@@ -56,11 +55,11 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:gravity="bottom|center"
-                        android:textColor="@android:color/white"
-                        android:textSize="25sp"
                         android:shadowColor="#000"
                         android:shadowRadius="7.0"
-                        android:textStyle="bold"/>
+                        android:textColor="@android:color/white"
+                        android:textSize="25sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/time"
@@ -68,10 +67,10 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:gravity="bottom|center"
-                        android:textSize="16sp"
                         android:shadowColor="#000"
                         android:shadowRadius="7.0"
-                        android:textColor="@color/white"/>
+                        android:textColor="@color/white"
+                        android:textSize="16sp" />
 
                     <TextView
                         android:id="@+id/city"
@@ -83,6 +82,17 @@
                         android:shadowRadius="7.0"
                         android:textColor="@android:color/white" />
 
+                    <android.support.design.widget.TabLayout
+                        android:id="@+id/tab_layout"
+                        app:tabMode="fixed"
+                        app:tabBackground = "@android:color/transparent"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        app:tabIndicatorHeight="0dp"
+                        app:tabGravity="fill"
+                        app:tabPadding="0dp"/>
+
                 </LinearLayout>
             </FrameLayout>
 
@@ -92,8 +102,7 @@
                 android:layout_height="?attr/actionBarSize"
                 android:background="@android:color/transparent"
                 app:layout_collapseMode="pin"
-                app:layout_scrollFlags="scroll|enterAlways"
-                />
+                app:layout_scrollFlags="scroll|enterAlways" />
 
         </android.support.design.widget.CollapsingToolbarLayout>
 
@@ -103,17 +112,16 @@
         android:id="@+id/progress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="visible"
         android:layout_gravity="center"
         android:layout_margin="5dp"
-        />
+        android:visibility="visible" />
 
     <android.support.v7.widget.RecyclerView
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/item_list_artwork"/>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:listitem="@layout/item_list_artwork" />
 
 
 </android.support.design.widget.CoordinatorLayout>

@@ -25,6 +25,11 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
 
+    compile('com.mikepenz:materialdrawer:5.1.9@aar') {
+        transitive = true
+    }
+    compile project(':volley')
+
     compile 'com.android.support:appcompat-v7:23.3.0'
     compile 'com.android.support:design:23.3.0'
     compile 'com.google.code.gson:gson:2.4'
@@ -32,10 +37,5 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:23.3.0'
     compile 'com.android.support:support-v4:23.3.0'
     compile 'com.google.android.gms:play-services:8.4.0'
-    compile('com.mikepenz:materialdrawer:5.1.9@aar') {
-        transitive = true
-    }
-    compile project(':volley')
     compile 'com.android.support:multidex:1.0.0'
-
 }
