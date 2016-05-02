@@ -7,8 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 
 import it.artefedeacireale.R;
 import it.artefedeacireale.activities.DetailImageActivity;
@@ -19,6 +23,7 @@ public class ImageChurchFragment extends Fragment {
     private String urlImage;
     private int idImage;
     private ImageView imageView;
+    private ProgressBar progressBar;
 
     // newInstance constructor for creating fragment with arguments
     public static ImageChurchFragment newInstance(String urlImage) {
@@ -52,8 +57,18 @@ public class ImageChurchFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_image_church, container, false);
 
         imageView = (ImageView) view.findViewById(R.id.image);
+        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
 
-        Glide.with(getActivity()).load(urlImage != null ? urlImage : idImage).crossFade().into(imageView);
+        Glide.with(getActivity())
+                .load(urlImage != null ? urlImage : idImage)
+                .into(new GlideDrawableImageViewTarget(imageView) {
+                    @Override
+                    public void onResourceReady(GlideDrawable drawable, GlideAnimation anim) {
+                        super.onResourceReady(drawable, anim);
+                        progressBar.setVisibility(View.GONE);
+                    }
+                });
+
 
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -2,20 +2,16 @@ package it.artefedeacireale.activities;
 
 import android.Manifest;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.ProgressBar;
 
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
@@ -28,40 +24,36 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import java.util.ArrayList;
 
 import it.artefedeacireale.R;
-import it.artefedeacireale.adapters.ItineraryListAdapter;
 import it.artefedeacireale.api.models.Itinerary;
+import it.artefedeacireale.fragments.CreditsFragment;
+import it.artefedeacireale.fragments.GalleryFragment;
+import it.artefedeacireale.fragments.HolidayFragment;
+import it.artefedeacireale.fragments.InfoFragment;
+import it.artefedeacireale.fragments.ItineraryFragment;
+import it.artefedeacireale.fragments.MapsFragment;
 import it.artefedeacireale.util.NetworkUtil;
-import it.artefedeacireale.util.RecyclerViewClickListener;
 
 public class MainActivity extends AppCompatActivity {
 
-    private RecyclerView mRecyclerView;
-    private LinearLayoutManager mLinearLayoutManager;
-    private ItineraryListAdapter mItineraryListAdapter;
     private Drawer drawer;
-    private ProgressBar progressBar;
-
+    private Toolbar toolbar;
     private static final int PERMISSION_ACCESS_WRITE_EXTERNAL_STORAGE = 2;
+    final PrimaryDrawerItem itemItinerary = new PrimaryDrawerItem().withName(R.string.itinerari).withIcon(R.mipmap.ic_map_black_24dp);
+    final PrimaryDrawerItem itemMap = new PrimaryDrawerItem().withName(R.string.mappa).withIcon(R.mipmap.ic_place_black_24dp);
+    final PrimaryDrawerItem itemFotoVideo = new PrimaryDrawerItem().withName(R.string.foto_video).withIcon(R.mipmap.ic_photo_library_black_24dp);
+    final PrimaryDrawerItem itemEvent = new PrimaryDrawerItem().withName(R.string.eventi).withIcon(R.mipmap.ic_event_black_24dp);
+    final PrimaryDrawerItem itemInfo = new PrimaryDrawerItem().withName(R.string.info).withIcon(R.mipmap.ic_email_black_24dp);
+    final PrimaryDrawerItem itemCredits = new PrimaryDrawerItem().withName(R.string.credits).withIcon(R.mipmap.ic_info_outline_black_24dp);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(getResources().getString(R.string.itinerari));
         setSupportActionBar(toolbar);
 
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
-
         isPermissionsWriteGranted();
-
-        final PrimaryDrawerItem itemItinerary = new PrimaryDrawerItem().withName(R.string.itinerari).withIcon(R.mipmap.ic_map_black_24dp).withSelectable(false);
-        final PrimaryDrawerItem itemMap = new PrimaryDrawerItem().withName(R.string.mappa).withIcon(R.mipmap.ic_place_black_24dp).withSelectable(false);
-        final PrimaryDrawerItem itemFotoVideo = new PrimaryDrawerItem().withName(R.string.foto_video).withIcon(R.mipmap.ic_photo_library_black_24dp).withSelectable(false);
-        final PrimaryDrawerItem itemEvent = new PrimaryDrawerItem().withName(R.string.eventi).withIcon(R.mipmap.ic_event_black_24dp).withSelectable(false);
-        final PrimaryDrawerItem itemInfo = new PrimaryDrawerItem().withName(R.string.info).withIcon(R.mipmap.ic_email_black_24dp).withSelectable(false);
-        final PrimaryDrawerItem itemCredits = new PrimaryDrawerItem().withName(R.string.credits).withIcon(R.mipmap.ic_info_outline_black_24dp).withSelectable(false);
-
         AccountHeader headerResult = new AccountHeaderBuilder()
                 .withActivity(this)
                 .withHeaderBackground(R.drawable.side_nav_bar)
@@ -92,13 +84,13 @@ public class MainActivity extends AppCompatActivity {
                     itemInfo,
                     itemCredits
                 )
-                .withSelectedItem(-1)
                 .withSavedInstance(savedInstanceState)
                 .withActionBarDrawerToggle(true)
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                         if(drawerItem.equals(itemEvent)) openHolyday();
+                        else if(drawerItem.equals(itemItinerary)) openItinerary();
                         else if(drawerItem.equals(itemMap)) openMap();
                         else if(drawerItem.equals(itemFotoVideo)) openGallery();
                         else if(drawerItem.equals(itemInfo)) openInfo();
@@ -110,72 +102,58 @@ public class MainActivity extends AppCompatActivity {
                 })
                 .build();
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.list);
-        mRecyclerView.setHasFixedSize(true);
-        mLinearLayoutManager = new LinearLayoutManager(getApplicationContext());
-        mRecyclerView.setLayoutManager(mLinearLayoutManager);
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mItineraryListAdapter = new ItineraryListAdapter(getApplicationContext());
-        mRecyclerView.setAdapter(mItineraryListAdapter);
+        openItinerary();
 
-        mItineraryListAdapter.setItineraries((ArrayList<Itinerary>) getIntent().getSerializableExtra("itineraries"));
-        hideProgressBar();
+    }
 
-        mRecyclerView.addOnItemTouchListener(new RecyclerViewClickListener(getApplicationContext(), mRecyclerView, new RecyclerViewClickListener.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                if (new NetworkUtil().isNetworkConnected(getApplicationContext())) {
-                    Intent intent = new Intent(getApplicationContext(), ChurchListActivity.class);
-                    Itinerary itinerary = mItineraryListAdapter.get(position);
-                    intent.putExtra("id_itinerary", itinerary.getId());
-                    intent.putExtra("name_itinerary", itinerary.getNome());
-                    intent.putExtra("time_itinerary", itinerary.getTempo());
-                    startActivity(intent);
-                }
-
-            }
-
-            @Override
-            public void onItemLongPress(View view, int position) {
-            }
-        }));
-
+    public void openItinerary() {
+        if (new NetworkUtil().isNetworkConnected(getApplicationContext())) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.fragment_placeholder, new ItineraryFragment().newInstance((ArrayList<Itinerary>) getIntent().getSerializableExtra("itineraries")));
+            ft.commit();
+            toolbar.setTitle(getResources().getString(R.string.itinerari));
+        }
     }
 
     public void openMap() {
         if (new NetworkUtil().isNetworkConnected(getApplicationContext())) {
-            Intent intent = new Intent(this, MapsActivity.class);
-            startActivity(intent);
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.fragment_placeholder, new MapsFragment());
+            ft.commit();
+            toolbar.setTitle(getResources().getString(R.string.mappa));
         }
     }
 
     public void openGallery() {
         if (new NetworkUtil().isNetworkConnected(getApplicationContext())) {
-            Intent intent = new Intent(this, GalleryActivity.class);
-            startActivity(intent);
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.fragment_placeholder, new GalleryFragment());
+            ft.commit();
+            toolbar.setTitle(getResources().getString(R.string.foto_video));
         }
     }
 
     public void openHolyday() {
         if (new NetworkUtil().isNetworkConnected(getApplicationContext())) {
-            Intent intent = new Intent(this, HolidayActivity.class);
-            startActivity(intent);
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.fragment_placeholder, new HolidayFragment());
+            ft.commit();
+            toolbar.setTitle(getResources().getString(R.string.eventi));
         }
     }
 
     public void openInfo() {
-        Intent intent = new Intent(this, InfoActivity.class);
-        startActivity(intent);
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.fragment_placeholder, new InfoFragment());
+        ft.commit();
+        toolbar.setTitle(getResources().getString(R.string.info));
     }
 
     public void openCredits() {
-        Intent intent = new Intent(this, CreditsActivity.class);
-        startActivity(intent);
-    }
-
-    private void hideProgressBar() {
-        progressBar.setVisibility(View.GONE);
-        mRecyclerView.setVisibility(View.VISIBLE);
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.fragment_placeholder, new CreditsFragment());
+        ft.commit();
+        toolbar.setTitle(getResources().getString(R.string.credits));
     }
 
     @Override
@@ -232,7 +210,4 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-
-
-
 }

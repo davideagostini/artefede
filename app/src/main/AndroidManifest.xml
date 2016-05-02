@@ -49,29 +49,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
         <activity
-            android:name=".activities.CreditsActivity"
+            android:name=".activities.DetailImageActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
-        <activity
-            android:name=".activities.InfoActivity"
+        <activity android:name=".activities.DetailListActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
-        <activity
-            android:name=".activities.HolidayActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/NoActionBar" />
-        <activity
-            android:name=".activities.MapsActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/NoActionBar" />
-        <activity
-            android:name=".activities.GalleryActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/NoActionBar" />
-        <activity android:name=".activities.DetailImageActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/NoActionBar"/>
-
         <service
             android:name=".services.ChurchService"
             android:exported="false" />

@@ -1,4 +1,4 @@
-package it.artefedeacireale.activities;
+package it.artefedeacireale.fragments;
 
 import android.Manifest;
 import android.content.BroadcastReceiver;
@@ -9,21 +9,20 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -31,60 +30,61 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.ArrayList;
 
 import it.artefedeacireale.R;
+import it.artefedeacireale.activities.ChurchDetailActivity;
 import it.artefedeacireale.api.models.MarkerMaps;
 import it.artefedeacireale.services.MapService;
 import it.artefedeacireale.util.NetworkUtil;
 
-public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
+public class MapsFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
 
     private GoogleMap mMap;
     private static final int PERMISSION_ACCESS_FINE_LOCATION = 1;
-    private static final String TAG = MapsActivity.class.getSimpleName();
+    private static final String TAG = MapsFragment.class.getSimpleName();
     private Intent intentService;
     private int id_church;
 
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
-
-        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        mToolbar.setTitle(getResources().getString(R.string.mappa));
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-
-        MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-
+        //startDownloadData();
     }
 
     @Override
-    protected void onResume() {
+    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_maps, parent, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+    }
+
+    @Override
+    public void onResume() {
         super.onResume();
 
         IntentFilter filter = new IntentFilter(MapService.ACTION_MAP);
-        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, filter);
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(broadcastReceiver, filter);
 
         startDownloadData();
     }
 
     @Override
-    protected void onPause() {
+    public void onPause() {
         super.onPause();
 
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(broadcastReceiver);
     }
 
     private void startDownloadData() {
 
-        if (new NetworkUtil().isNetworkConnected(getApplicationContext())) {
+        if (new NetworkUtil().isNetworkConnected(getActivity())) {
 
-            if (intentService != null) stopService(intentService);
-            intentService = new Intent(this, MapService.class);
+            if (intentService != null) getActivity().stopService(intentService);
+            intentService = new Intent(getActivity(), MapService.class);
             intentService.setAction(MapService.ACTION_MAP);
-            startService(intentService);
+            getActivity().startService(intentService);
 
         }
     }
@@ -103,7 +103,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             mMap.addMarker(new MarkerOptions().position(lat_lng).title(m.getNome()).snippet(String.valueOf(m.getId())));
         }
 
-        mMap.setInfoWindowAdapter(new MyInfoWindowAdaper(getApplicationContext()));
+        mMap.setInfoWindowAdapter(new MyInfoWindowAdaper(getActivity()));
         mMap.setOnInfoWindowClickListener(this);
     }
 
@@ -120,35 +120,31 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onInfoWindowClick(Marker marker) {
-        Intent intent = new Intent(getApplicationContext(), ChurchDetailActivity.class);
+        Intent intent = new Intent(getActivity(), ChurchDetailActivity.class);
         intent.putExtra("id_church", id_church);
         intent.putExtra("name_church", marker.getTitle());
         startActivity(intent);
     }
 
     private void enabledMyLocation() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_ACCESS_FINE_LOCATION);
-
-        } else if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
-            new AlertDialog.Builder(this)
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_ACCESS_FINE_LOCATION);
+        } else if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)) {
+            new AlertDialog.Builder(getActivity())
                     .setTitle(R.string.no_location_permission_title)
                     .setMessage(R.string.no_location_permission_message)
                     .setPositiveButton(android.R.string.ok,
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    ActivityCompat.requestPermissions(MapsActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_ACCESS_FINE_LOCATION);
+                                    ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_ACCESS_FINE_LOCATION);
                                 }
                             })
                     .create()
                     .show();
 
-        } else {
+        } else
             mMap.setMyLocationEnabled(true);
-        }
-
     }
 
     @Override
@@ -157,7 +153,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
                 enabledMyLocation();
             else {
-                new AlertDialog.Builder(this)
+                new AlertDialog.Builder(getActivity())
                         .setTitle(R.string.no_location_permission_title)
                         .setMessage(R.string.no_location_permission_message)
                         .setPositiveButton(android.R.string.ok,
@@ -169,21 +165,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                                 })
                         .create()
                         .show();
-
             }
         }
 
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == android.R.id.home) {
-            onBackPressed();
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     class MyInfoWindowAdaper implements GoogleMap.InfoWindowAdapter {

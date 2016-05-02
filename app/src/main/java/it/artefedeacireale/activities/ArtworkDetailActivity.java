@@ -63,6 +63,7 @@ public class ArtworkDetailActivity extends AppCompatActivity implements AppBarLa
         if (getIntent().getStringExtra("image_artwork") != null)
             Glide.with(getApplicationContext()).load(getIntent().getStringExtra("image_artwork")).crossFade().into(image);
 
+
         startDownloadData();
 
         image.setOnClickListener(new View.OnClickListener() {

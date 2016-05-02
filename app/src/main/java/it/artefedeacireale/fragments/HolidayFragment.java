@@ -1,18 +1,18 @@
-package it.artefedeacireale.activities;
+package it.artefedeacireale.fragments;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import java.util.ArrayList;
@@ -23,62 +23,60 @@ import it.artefedeacireale.api.models.Holiday;
 import it.artefedeacireale.services.EventService;
 import it.artefedeacireale.util.NetworkUtil;
 
-public class HolidayActivity extends AppCompatActivity {
+public class HolidayFragment extends Fragment {
 
     private Intent intentService;
-    private Toolbar mToolbar;
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLinearLayoutManager;
     private EventListAdapter eventListAdapter;
     private ProgressBar progressBar;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_holiday);
-
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        mToolbar.setTitle(getResources().getString(R.string.eventi));
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
-        mRecyclerView = (RecyclerView) findViewById(R.id.list);
-        mRecyclerView.setHasFixedSize(true);
-        mLinearLayoutManager = new LinearLayoutManager(getApplicationContext());
-        mRecyclerView.setLayoutManager(mLinearLayoutManager);
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        eventListAdapter = new EventListAdapter(getApplicationContext());
-        mRecyclerView.setAdapter(eventListAdapter);
-
-
         startDownloadData();
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-
-        IntentFilter filter = new IntentFilter(EventService.ACTION_EVENT);
-        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, filter);
+    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_holiday, parent, false);
     }
 
     @Override
-    protected void onPause() {
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.list);
+        mRecyclerView.setHasFixedSize(true);
+        mLinearLayoutManager = new LinearLayoutManager(getActivity());
+        mRecyclerView.setLayoutManager(mLinearLayoutManager);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        eventListAdapter = new EventListAdapter(getActivity());
+        mRecyclerView.setAdapter(eventListAdapter);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        IntentFilter filter = new IntentFilter(EventService.ACTION_EVENT);
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(broadcastReceiver, filter);
+    }
+
+    @Override
+    public void onPause() {
         super.onPause();
 
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(broadcastReceiver);
     }
 
     private void startDownloadData() {
 
-        if (new NetworkUtil().isNetworkConnected(getApplicationContext())) {
+        if (new NetworkUtil().isNetworkConnected(getActivity())) {
 
-            if (intentService != null) stopService(intentService);
-            intentService = new Intent(this, EventService.class);
+            if (intentService != null) getActivity().stopService(intentService);
+            intentService = new Intent(getActivity(), EventService.class);
             intentService.setAction(EventService.ACTION_EVENT);
-            startService(intentService);
+            getActivity().startService(intentService);
 
         }
     }
@@ -94,17 +92,6 @@ public class HolidayActivity extends AppCompatActivity {
 
     private void setMyView(ArrayList<Holiday> holidays) {
         eventListAdapter.setItemList(holidays);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == android.R.id.home) {
-            onBackPressed();
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     private void hideProgressBar() {

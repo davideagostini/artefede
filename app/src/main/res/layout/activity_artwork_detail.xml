@@ -136,7 +136,6 @@
                 android:layout_margin="5dp"
                 />
 
-
             <LinearLayout
                 android:id="@+id/layout_description"
                 android:layout_width="match_parent"
