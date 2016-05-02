@@ -1,42 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/detail"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black"
     tools:context="it.artefedeacireale.activities.DetailImageActivity">
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
-
-    <ScrollView
-        android:id="@+id/scroll"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="?attr/actionBarSize"
-        android:fillViewport="true">
-
-        <ImageView
-            android:id="@+id/image_detail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true" />
-
-    </ScrollView>
 
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true" />
+        android:layout_centerVertical="true"
+        android:layout_gravity="center" />
 
-</RelativeLayout>
+    <ImageView
+        android:id="@+id/close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:padding="20dp"
+        android:src="@mipmap/ic_close_white_24dp"
+        android:text="close"
+        android:textColor="@color/blue_grey_500" />
+
+    <ImageView
+        android:id="@+id/image_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/itinerario"
+        android:layout_gravity="center"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
+
+</FrameLayout>
 
 
