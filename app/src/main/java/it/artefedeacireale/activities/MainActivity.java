@@ -79,29 +79,29 @@ public class MainActivity extends AppCompatActivity {
                 .withActivity(this)
                 .withTranslucentStatusBar(true)
                 .withAccountHeader(new AccountHeaderBuilder()
-                                .withActivity(this)
-                                .withHeaderBackground(R.drawable.side_nav_bar)
-                                .build()
+                        .withActivity(this)
+                        .withHeaderBackground(R.drawable.side_nav_bar)
+                        .build()
                 )
                 .withAccountHeader(headerResult)
                 .addDrawerItems(
-                    itemItinerary,
-                    itemMap,
-                    itemFotoVideo,
-                    itemEvent,
-                    itemInfo,
-                    itemCredits
+                        itemItinerary,
+                        itemMap,
+                        itemFotoVideo,
+                        itemEvent,
+                        itemInfo,
+                        itemCredits
                 )
                 .withSavedInstance(savedInstanceState)
                 .withActionBarDrawerToggle(true)
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        if(drawerItem.equals(itemEvent)) openHolyday();
-                        else if(drawerItem.equals(itemItinerary)) openItinerary();
-                        else if(drawerItem.equals(itemMap)) openMap();
-                        else if(drawerItem.equals(itemFotoVideo)) openGallery();
-                        else if(drawerItem.equals(itemInfo)) openInfo();
+                        if (drawerItem.equals(itemEvent)) openHolyday();
+                        else if (drawerItem.equals(itemItinerary)) openItinerary();
+                        else if (drawerItem.equals(itemMap)) openMap();
+                        else if (drawerItem.equals(itemFotoVideo)) openGallery();
+                        else if (drawerItem.equals(itemInfo)) openInfo();
                         else if (drawerItem.equals(itemCredits)) openCredits();
 
 
@@ -151,17 +151,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openInfo() {
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.fragment_placeholder, new InfoFragment());
-        ft.commit();
-        toolbar.setTitle(getResources().getString(R.string.info));
+        if (new NetworkUtil().isNetworkConnected(getApplicationContext())) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.fragment_placeholder, new InfoFragment());
+            ft.commit();
+            toolbar.setTitle(getResources().getString(R.string.info));
+        }
     }
 
     public void openCredits() {
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.fragment_placeholder, new CreditsFragment());
-        ft.commit();
-        toolbar.setTitle(getResources().getString(R.string.credits));
+        if (new NetworkUtil().isNetworkConnected(getApplicationContext())) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.fragment_placeholder, new CreditsFragment());
+            ft.commit();
+            toolbar.setTitle(getResources().getString(R.string.credits));
+        }
     }
 
     @Override
@@ -178,8 +182,7 @@ public class MainActivity extends AppCompatActivity {
             if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
 
 
-            }
-            else if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            } else if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                 new AlertDialog.Builder(this)
                         .setTitle(R.string.no_write_permission_title)
                         .setMessage(R.string.no_write_permission_message)
@@ -240,9 +243,8 @@ public class MainActivity extends AppCompatActivity {
             if (intent.getAction().equals(ConnectivityManager.CONNECTIVITY_ACTION) && !NetworkUtil.isNetworkConnected(context)) {
                 snackbar = Snackbar.make(findViewById(android.R.id.content), R.string.no_connection, Snackbar.LENGTH_INDEFINITE);
                 snackbar.show();
-            }
-            else {
-                if(snackbar != null && snackbar.isShown())
+            } else {
+                if (snackbar != null && snackbar.isShown())
                     snackbar.dismiss();
             }
         }
