@@ -120,10 +120,12 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
 
     @Override
     public void onInfoWindowClick(Marker marker) {
-        Intent intent = new Intent(getActivity(), ChurchDetailActivity.class);
-        intent.putExtra("id_church", id_church);
-        intent.putExtra("name_church", marker.getTitle());
-        startActivity(intent);
+        if (new NetworkUtil().isNetworkConnected(getActivity())) {
+            Intent intent = new Intent(getActivity(), ChurchDetailActivity.class);
+            intent.putExtra("id_church", id_church);
+            intent.putExtra("name_church", marker.getTitle());
+            startActivity(intent);
+        }
     }
 
     private void enabledMyLocation() {

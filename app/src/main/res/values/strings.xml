@@ -44,8 +44,8 @@
     <string name="no_location_permission_title">Permessi di localizzazione</string>
     <string name="no_location_permission_message">L\'applicazione necessita di questo permesso per localizzare le chiese a te vicine.</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="no_connection">Connessione internet assente</string>
+    <string name="check_connection">Tocca lo schermo per riprovare</string>
 
 
 </resources>

@@ -4,7 +4,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -83,6 +85,8 @@ public class ChurchListActivity extends AppCompatActivity {
 
         IntentFilter filter = new IntentFilter(ChurchService.ACTION_CHURCH_LIST);
         LocalBroadcastManager.getInstance(this).registerReceiver(itineraryReceiver, filter);
+
+        registerReceiver(networkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
     }
 
     @Override
@@ -90,6 +94,7 @@ public class ChurchListActivity extends AppCompatActivity {
         super.onPause();
 
         LocalBroadcastManager.getInstance(this).unregisterReceiver(itineraryReceiver);
+        unregisterReceiver(networkReceiver);
     }
 
     private void startDownloadItinerary() {
@@ -130,4 +135,21 @@ public class ChurchListActivity extends AppCompatActivity {
         progressBar.setVisibility(View.GONE);
         mRecyclerView.setVisibility(View.VISIBLE);
     }
+
+    private BroadcastReceiver networkReceiver = new BroadcastReceiver() {
+
+        private Snackbar snackbar;
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(ConnectivityManager.CONNECTIVITY_ACTION) && !NetworkUtil.isNetworkConnected(context)) {
+                snackbar = Snackbar.make(findViewById(android.R.id.content), R.string.no_connection, Snackbar.LENGTH_INDEFINITE);
+                snackbar.show();
+            }
+            else {
+                if(snackbar != null && snackbar.isShown())
+                    snackbar.dismiss();
+            }
+        }
+    };
 }

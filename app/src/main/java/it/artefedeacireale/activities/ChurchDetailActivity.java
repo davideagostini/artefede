@@ -7,10 +7,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -128,6 +130,7 @@ public class ChurchDetailActivity extends AppCompatActivity implements AppBarLay
 
         IntentFilter filter = new IntentFilter(ChurchDetailService.ACTION_CHURCH_DETAIL);
         LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, filter);
+        registerReceiver(networkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
     }
 
     @Override
@@ -135,6 +138,7 @@ public class ChurchDetailActivity extends AppCompatActivity implements AppBarLay
         super.onPause();
 
         LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
+        unregisterReceiver(networkReceiver);
     }
 
     private void startDownloadData() {
@@ -362,4 +366,21 @@ public class ChurchDetailActivity extends AppCompatActivity implements AppBarLay
         }
 
     }
+
+    private BroadcastReceiver networkReceiver = new BroadcastReceiver() {
+
+        private Snackbar snackbar;
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(ConnectivityManager.CONNECTIVITY_ACTION) && !NetworkUtil.isNetworkConnected(context)) {
+                snackbar = Snackbar.make(findViewById(android.R.id.content), R.string.no_connection, Snackbar.LENGTH_INDEFINITE);
+                snackbar.show();
+            }
+            else {
+                if(snackbar != null && snackbar.isShown())
+                    snackbar.dismiss();
+            }
+        }
+    };
 }

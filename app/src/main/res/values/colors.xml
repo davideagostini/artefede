@@ -9,8 +9,10 @@
     <color name="black_overlay_600">#44000000</color>
     <color name="grey_200">#EEEEEE</color>
     <color name="black">#000000</color>
+    <color name="black_300">#323232</color>
     <color name="blue_grey_500">#607D8B</color>
 
     <color name="grey">#f2f2f2</color>
+
     <color name="item_title">#616161</color>
 </resources>

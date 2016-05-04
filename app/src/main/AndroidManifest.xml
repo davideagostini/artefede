@@ -52,9 +52,11 @@
             android:name=".activities.DetailImageActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
-        <activity android:name=".activities.DetailListActivity"
+        <activity
+            android:name=".activities.DetailListActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
+
         <service
             android:name=".services.ChurchService"
             android:exported="false" />
